@@ -219,5 +219,10 @@ class Order extends CI_Controller {
 
 
     }
+
+    public function lastprice() {
+        $prices = $this->marketmodel->lastprice();
+        return $this->output->set_output(json_encode($prices));
+    }
     
 }

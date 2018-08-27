@@ -336,6 +336,10 @@ class Marketmodel extends CI_Model {
 
     }
 
+    public function lastprice() {
+        return $this->db->select('*')->from('tb_orders')->order_by('order_id','desc')->get()->result();
+    }
+
 
 
     

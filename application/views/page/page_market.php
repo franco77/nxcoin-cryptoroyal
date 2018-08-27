@@ -22,6 +22,65 @@
 
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div id="curve_chart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+    
+    
+    function drawChart() {
+    
+    $.ajax({
+        url: '<?php echo site_url('order/lastprice') ?>',
+        type: 'get',
+        dataType: 'json'
+    }).done(function(res) {
+        
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Date');
+        data.addColumn('number', 'NXCC Price');
+        res.forEach(function(row) {
+            price = parseFloat($.trim(row.price));
+            console.log(price);
+            data.addRow([
+                row.created_at,
+                price.toFixed(6)
+            ]);
+        });
+        //var data = new google.visualization.DataTable(jsonData);
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+
+        chart.draw(data, options);
+    });
+
+    
+
+    var options = {
+        title: 'NXCC/BTC',
+        curveType: 'function',
+        legend: { position: 'bottom' }
+    };
+
+    
+    }
+
+</script>
 
 
 <div class="row">
