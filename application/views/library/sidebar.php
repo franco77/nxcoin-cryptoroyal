@@ -30,6 +30,7 @@
             </ul>
         </li>
         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?php echo base_url('transfer') ?>" aria-expanded="false"><i class="mdi mdi-credit-card-multiple"></i><span class="hide-menu">Transfer</span></a></li> 
+        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?php echo base_url('market') ?>" aria-expanded="false"><i class="mdi mdi-chart-areaspline"></i><span class="hide-menu">Internal Market</span></a></li> 
         <?php if ($this->ion_auth->is_admin()){ ?>
             <li class="nav-small-cap"><i class="mdi mdi-dots-horizontal"></i> <span class="hide-menu">Admin Panel</span></li> 
             <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?php echo base_url('admin/view/userlist') ?>" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Userlist</span></a></li>
