@@ -159,5 +159,6 @@ $autoload['model'] = array(
 	'mainmodel',
 	'postusermodel',
 	'usermodel',
-	'mailermodel'
+	'mailermodel',
+	'marketmodel'
 );
