@@ -65,6 +65,17 @@ class Walletmodel extends CI_Model {
 		return $contents;
 	}
 
+	public function get_wallet($type = 'A', $userid=null) {
+		$userid = ($userid == null)? userid() : $userid;
+
+		$this->db->select('*');
+		$this->db->where('wallet_userid', $userid);
+		$this->db->where('wallet_type', $type);
+		$this->db->where('wallet_address is NOT NULL', NULL, FALSE);
+
+		return $this->db->get('tb_wallet')->row();
+	}
+
 }
 
 /* End of file  */
