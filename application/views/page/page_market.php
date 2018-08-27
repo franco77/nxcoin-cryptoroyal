@@ -84,6 +84,25 @@ google.charts.setOnLoadCallback(drawChart);
 
 
 <div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                
+                <form>
+                    <p>Deposit Your btc to this address if you want to buy NXCC</p>
+                    <div class="form-group">
+                        <label for="">BTC WALLET</label>
+                        <input type="text" class="form-control" value="<?php echo $btcWallet; ?>" placeholder="Input field">
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
     <div class="col-lg-6">
     	<div class="card">
     		<div class="card-body">
