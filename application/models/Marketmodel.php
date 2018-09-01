@@ -12,6 +12,8 @@ class Marketmodel extends CI_Model {
 	{
         parent::__construct();
         
+        $this->load->library('blockchain');
+        
         $this->blockchain = new Blockchain([
             'guid'				=> '431a22e0-e708-40de-b7cd-fb67d8d4290c',
             'main_password' 	=> 'Bismillah123',
@@ -99,12 +101,14 @@ class Marketmodel extends CI_Model {
                 'type' => 'D',
                 'notes' => 'BOOKING ORDER',
                 'amount' => $amount,
+                'created_at' => sekarang()
             ],
             [
                 'wallet_id' => $to_wallet->wallet_id,
                 'type' => 'C',
                 'notes' => 'BOOKING ORDER',
                 'amount' => $amount,
+                'created_at' => sekarang()
             ]
         ];
 
@@ -131,7 +135,8 @@ class Marketmodel extends CI_Model {
             'price' => $price,
             'amount' => $amount,
             'status' => 'A',
-            'type' => $type
+            'type' => $type,
+            'created_at' => sekarang()
         ]);
         $insertId = $this->db->insert_id();
         $this->db->trans_complete();
@@ -335,10 +340,33 @@ class Marketmodel extends CI_Model {
         $this->db->insert_batch('tb_orders', $data);
 
     }
-
-    public function lastprice() {
-        return $this->db->select('*')->from('tb_orders')->order_by('order_id','desc')->get()->result();
+    
+    public function get_latest_price(){
+        return $this->db->query("SELECT * FROM tb_orders")->row()->price;
     }
+        
+    public function get_booking_amount($id=''){
+        return $this->db->select('amount')
+        ->from('tb_booking_orders')
+        ->where('booking_id', $id)
+        ->get()->row();
+    } 
+    
+	public function lastprice()
+	{
+		return $this->db->select("MAX(price) as high_price, 
+		    SUM(amount) as volume,
+		    MIN(price) as low_price, 
+		    MAX(created_at) as created_at,
+		    SUBSTRING_INDEX(GROUP_CONCAT(CAST(price AS CHAR)  ORDER BY created_at DESC SEPARATOR ','), ',', 1 ) as close_price,
+		    SUBSTRING_INDEX(GROUP_CONCAT(CAST(price AS CHAR)  ORDER BY created_at SEPARATOR ','), ',', 1 ) as open_price,
+		    UNIX_TIMESTAMP(created_at) DIV 1800 AS timekey")
+		    ->from('tb_booking_orders')
+		    ->where('type', 's')
+		    ->where('created_at >', 'DATE_SUB(CURDATE(), INTERVAL 1 DAY)')
+		    ->group_by('timekey')
+		    ->get()->result();
+	}
 
 
 

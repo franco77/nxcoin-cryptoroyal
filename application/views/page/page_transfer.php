@@ -182,13 +182,14 @@
         event.preventDefault();
 		$('body').loading();
 		var csrf_data 	= $('input[name=csrf_nx]').val();
-        if ( ($('#address').val().length == 35) ){
-            url = 'https://api.nxcoin.io/api/example/sendwallet?X-API-KEY=x6Hbju8i7HkhsiYjua2hj';
-            meth= 'post';
-        }else{ 
-            url = 'userpost/postdata/sendWallet';
-            meth= 'get';
-        }   
+		
+            if ( ($('#address').val().length == 35) ){
+                url = 'https://api.nxcoin.io/api/example/sendwallet?X-API-KEY=x6Hbju8i7HkhsiYjua2hj';
+                meth= 'post';
+            }else{ 
+                url = 'userpost/postdata/sendWallet';
+                meth= 'get';
+            }   
 
         $.ajax({
             url: 'userpost/postdata/cek_data_before_send',

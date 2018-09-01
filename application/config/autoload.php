@@ -151,13 +151,11 @@ $autoload['language'] = array();
 |	$autoload['model'] = array('first_model' => 'first');
 */
 $autoload['model'] = array(
-	'paginationmodel',
-	'balancemodel',
+	'paginationmodel', 
 	'walletmodel',
 	'stackingmodel',
 	'bonusmodel',
 	'mainmodel',
-	'postusermodel',
 	'usermodel',
 	'mailermodel',
 	'marketmodel'

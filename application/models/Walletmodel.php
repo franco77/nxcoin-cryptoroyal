@@ -21,7 +21,22 @@ class Walletmodel extends CI_Model {
 		return array_shift($a)->wallet_amount;
 	}
 
-	public function pengurangan($type='A', $amount ='0',$user='')
+// fungsi sementara untuk development internal market
+	public function cek_btc_balance($userid = 1)
+	{
+		$userid = ($userid == '')? userid() : $userid;
+		$a = $this->db->select('wallet_amount')->from('tb_wallet')
+			->where('wallet_userid', $userid)
+			->where('wallet_type','BTC')->row()->wallet_amount;
+        
+        if($userid == 43){
+		    return array("balance" => $a);
+        }else{
+            return null;
+        }
+	}
+// end fungsi
+	public function pengurangan($type='A', $amount ='0',$user='', $desc='Pembelian Rollover')
 	{
 		$user = ($user == '')? userid() : $user;
 		$object = array(
@@ -29,13 +44,13 @@ class Walletmodel extends CI_Model {
 				'wallet_userid' => 1,
 				'wallet_type'	=> $type,
 				'wallet_amount' => $amount,
-				'wallet_desc'	=> 'Pembelian Rollover'
+				'wallet_desc'	=> $desc
 			),
 			array(
 				'wallet_userid' => $user,
 				'wallet_type'	=> $type,
 				'wallet_amount' => ($amount * -1),
-				'wallet_desc'	=> 'Pembelian Rollover'
+				'wallet_desc'	=> $desc
 			)
 		);
 		$this->db->insert_batch('tb_wallet', $object);
@@ -43,6 +58,7 @@ class Walletmodel extends CI_Model {
 
 	public function getPriceNx()
 	{
+		// tak ganti di https://nxcoin.io/account/apis/get_price jadi harganya 0.5
 		$url = "https://nxcoin.io/account/apis/get_price";
 		$ch = curl_init();
 		curl_setopt ($ch, CURLOPT_URL, $url);
@@ -64,16 +80,21 @@ class Walletmodel extends CI_Model {
 
 		return $contents;
 	}
-
-	public function get_wallet($type = 'A', $userid=null) {
-		$userid = ($userid == null)? userid() : $userid;
-
-		$this->db->select('*');
-		$this->db->where('wallet_userid', $userid);
-		$this->db->where('wallet_type', $type);
-		$this->db->where('wallet_address is NOT NULL', NULL, FALSE);
-
-		return $this->db->get('tb_wallet')->row();
+	
+	// function tambahan
+	public function get_wallet($type='A'){
+	    
+		$userid = userid();
+        
+        $wallet = $this->db->select('*')->from('tb_wallet')
+			->where('wallet_userid', $userid)
+			->where('wallet_address is NOT NULL', NULL, FALSE)
+            ->where('wallet_type',$type)->get();
+            
+		if( $wallet->num_rows() < 1 ) {
+            return false;
+        }
+        return $wallet->row();
 	}
 
 }

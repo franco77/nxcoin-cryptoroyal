@@ -12,8 +12,14 @@
         $btcWallet = $btcWallet->wallet_address;
 
     }
-
-    $btcBalance = $this->marketmodel->blockchain->address_balance($btcWallet);
+    //fungsi sementara untuk development internal market
+    if(userid() != 43){
+        $btcBalance = $this->marketmodel->blockchain->address_balance($btcWallet);
+    }
+    else{
+        $btcBalance = $this->walletmodel->cek_balance('BTC',43);
+    }
+    //end fungsi
     
     $pendings = $this->marketmodel->pending_orders();
     $orders = NULL;
@@ -25,6 +31,14 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 <div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                Latest Price :
+                <? echo $this->marketmodel->get_latest_price(); ?>
+            </div>
+        </div>
+    </div>
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
@@ -50,6 +64,7 @@ google.charts.setOnLoadCallback(drawChart);
         dataType: 'json'
     }).done(function(res) {
         
+        /* kodingan lama /
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Date');
         data.addColumn('number', 'NXCC Price');
@@ -58,12 +73,40 @@ google.charts.setOnLoadCallback(drawChart);
             console.log(price);
             data.addRow([
                 row.created_at,
-                price.toFixed(6)
+                Number(price.toFixed(6))
             ]);
         });
         //var data = new google.visualization.DataTable(jsonData);
+        */
+        
+        // candlestick chart
+        var temp = []
+        res.forEach(function(row) {
+            price = parseFloat($.trim(row.low_price));
+            price2 = parseFloat($.trim(row.open_price));
+            price3 = parseFloat($.trim(row.close_price));
+            price4 = parseFloat($.trim(row.high_price));
+            temp.push([
+                row.created_at,
+                Number(price.toFixed(6)),
+                Number(price2.toFixed(6)),
+                Number(price3.toFixed(6)),
+                Number(price4.toFixed(6))
+            ]);
+        });
+        var data = google.visualization.arrayToDataTable(temp, true);
 
-        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+        
+        var options = {
+          title: 'NXCC/BTC',
+          legend: 'none',
+          bar: { groupWidth: '100%' }, // Remove space between bars.
+          candlestick: {
+            fallingColor: { strokeWidth: 0, fill: '#a52714' }, // red
+            risingColor: { strokeWidth: 0, fill: '#0f9d58' }   // green
+          }
+        };
+        var chart = new google.visualization.CandlestickChart(document.getElementById('curve_chart'));
 
 
         chart.draw(data, options);
@@ -71,13 +114,14 @@ google.charts.setOnLoadCallback(drawChart);
 
     
 
+    /* kodingan lama /
     var options = {
         title: 'NXCC/BTC',
         curveType: 'function',
         legend: { position: 'bottom' }
     };
 
-    
+    */
     }
 
 </script>
@@ -145,7 +189,13 @@ google.charts.setOnLoadCallback(drawChart);
                 <?php echo form_open('', array('class' => 'form-horizontal m-t-20', 'id' => 'buy_nxcc' )); ?>
                     <legend>BUY NXCC</legend>
                     <div class="form-group">
-                        <label for="">Your BTC Balance: <?php echo convertToBTCFromSatoshi($btcBalance['balance']); ?> BTC</label>
+                        
+                        <?php if(userid() != 43){
+                            
+                        //fungsi sementara untuk development internal market
+                            $btcBalance = convertToBTCFromSatoshi($btcBalance['balance']); 
+                        }?>
+                        <label for="">Your BTC Balance: <?php echo $btcBalance ?> BTC</label>
                     </div>
                     <div class="form-group">
                         <label>Amount</label>
@@ -189,6 +239,7 @@ google.charts.setOnLoadCallback(drawChart);
                                 <th>AMOUNT</th>
                                 <th>TYPE</th>
                                 <th>TIME</th>
+                                <th>ACTION</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -200,8 +251,14 @@ google.charts.setOnLoadCallback(drawChart);
                                     <td><?= $p->pairs; ?></td>
                                     <td><?= $p->price; ?></td>
                                     <td><?= $p->amount; ?></td>
-                                    <td><?= ($p->type == 'S') ? 'SELL' : 'BUY'; ?></td>
+                                    <td class=<?= ($p->type == 'S') ? 'bg-success' : 'bg-primary'; ?> style="color:#fff"><?= ($p->type == 'S') ? 'SELL' : 'BUY'; ?></td>
                                     <td><?= $p->created_at; ?></td>
+                                    <td>
+                                        <?php echo form_open(site_url('order/cancel'), array('class' => 'form-horizontal m-t-20', 'id' => 'cancel'.$p->booking_id )); ?>
+                                            <input type='hidden' name='id' value="<?= $p->booking_id; ?>">
+                                            <button class="btn btn-xs btn-danger" type="submit" form='cancel<?= $p->booking_id; ?>'>Cancel</button>
+                                        <?php echo form_close(); ?> 
+                                    </td>
                                 </tr>
 
                                 <?php } ?>

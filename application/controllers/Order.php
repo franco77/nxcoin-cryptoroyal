@@ -17,13 +17,20 @@ class Order extends CI_Controller {
 
     }
 
+    public function cancel(){
+        $this->load->model('marketmodel');
+        $this->load->model('walletmodel');
+        $amount = $this->marketmodel->get_booking_amount(post('id'));
+        $this->walletmodel->pengurangan('A', ($amount * -1), userid(), 'BOOKING CANCEL');
+        $this->marketmodel->deactivateBooking(post('id'));
+        redirect($_SERVER['HTTP_REFERER']);
+    }
     public function sell() {
         $this->load->model('marketmodel');
 
         $blockchain = $this->marketmodel->blockchain;
         $btcAddress = $this->marketmodel->getBtcAddress();
         $nxccWallet = $this->walletmodel->get_wallet('A');
-
         $price = post('price');
         $amount = str_replace(',','',post('amount'));
 

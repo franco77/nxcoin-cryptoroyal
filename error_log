@@ -39,3 +39,54 @@
 [19-Aug-2018 17:00:00 UTC] PHP Parse error:  syntax error, unexpected '$config' (T_VARIABLE) in /home/cryptoroyal/public_html/account/application/config/email.php on line 13
 [19-Aug-2018 17:40:15 UTC] PHP Fatal error:  Call to undefined method Postusermodel::change_password() in /home/cryptoroyal/public_html/account/application/controllers/Admin.php on line 65
 [19-Aug-2018 17:40:37 UTC] PHP Fatal error:  Call to undefined method Postusermodel::change_password() in /home/cryptoroyal/public_html/account/application/controllers/Admin.php on line 65
+[30-Aug-2018 05:07:24 UTC] PHP Fatal error:  Call to undefined method Walletmodel::get_wallet() in /home/cryptoroyal/public_html/account/application/controllers/Order.php on line 25
+[30-Aug-2018 05:17:10 UTC] PHP Fatal error:  Call to undefined method Walletmodel::get_wallet() in /home/cryptoroyal/public_html/account/application/controllers/Order.php on line 25
+[30-Aug-2018 11:06:17 UTC] PHP Fatal error:  Unsupported operand types in /home/cryptoroyal/public_html/account/application/helpers/exchange_helper.php on line 75
+[30-Aug-2018 11:07:08 UTC] PHP Fatal error:  Unsupported operand types in /home/cryptoroyal/public_html/account/application/helpers/exchange_helper.php on line 75
+[30-Aug-2018 11:29:09 UTC] PHP Fatal error:  Unsupported operand types in /home/cryptoroyal/public_html/account/application/helpers/exchange_helper.php on line 75
+[30-Aug-2018 12:33:35 UTC] PHP Fatal error:  Call to undefined function parseFloat() in /home/cryptoroyal/public_html/account/application/controllers/market/Update.php on line 22
+[30-Aug-2018 12:34:23 UTC] PHP Fatal error:  Cannot use object of type stdClass as array in /home/cryptoroyal/public_html/account/application/controllers/market/Update.php on line 22
+[30-Aug-2018 12:34:26 UTC] PHP Fatal error:  Cannot use object of type stdClass as array in /home/cryptoroyal/public_html/account/application/controllers/market/Update.php on line 22
+[30-Aug-2018 14:36:08 UTC] PHP Fatal error:  Cannot use object of type stdClass as array in /home/cryptoroyal/public_html/account/application/controllers/market/Update.php on line 27
+[30-Aug-2018 14:53:16 UTC] PHP Fatal error:  Call to undefined method CI_DB_mysqli_result::results() in /home/cryptoroyal/public_html/account/application/controllers/market/Update.php on line 28
+[30-Aug-2018 15:16:01 UTC] PHP Fatal error:  Call to undefined method CI_DB_mysqli_driver::in() in /home/cryptoroyal/public_html/account/application/controllers/market/Update.php on line 27
+[31-Aug-2018 06:16:07 UTC] PHP Parse error:  syntax error, unexpected '<' in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 249
+[01-Sep-2018 04:17:32 UTC] PHP Fatal error:  Class 'Blockchain' not found in /home/cryptoroyal/public_html/account/application/models/Marketmodel.php on line 15
+[01-Sep-2018 04:17:40 UTC] PHP Fatal error:  Class 'Blockchain' not found in /home/cryptoroyal/public_html/account/application/models/Marketmodel.php on line 15
+[01-Sep-2018 04:17:43 UTC] PHP Fatal error:  Class 'Blockchain' not found in /home/cryptoroyal/public_html/account/application/models/Marketmodel.php on line 15
+[01-Sep-2018 04:28:48 UTC] PHP Fatal error:  Class 'Blockchain' not found in /home/cryptoroyal/public_html/account/application/models/Marketmodel.php on line 15
+[01-Sep-2018 04:59:32 UTC] PHP Fatal error:  Class 'Blockchain' not found in /home/cryptoroyal/public_html/account/application/models/Marketmodel.php on line 15
+[01-Sep-2018 04:59:32 UTC] PHP Fatal error:  Class 'Blockchain' not found in /home/cryptoroyal/public_html/account/application/models/Marketmodel.php on line 15
+[01-Sep-2018 05:48:24 UTC] PHP Fatal error:  Class 'Blockchain' not found in /home/cryptoroyal/public_html/account/application/models/Marketmodel.php on line 16
+[01-Sep-2018 05:48:29 UTC] PHP Fatal error:  Class 'Blockchain' not found in /home/cryptoroyal/public_html/account/application/models/Marketmodel.php on line 16
+[01-Sep-2018 05:51:19 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 05:51:28 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 05:51:38 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 05:51:53 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 05:52:55 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 05:53:04 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 05:54:32 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 05:57:32 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 05:57:57 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 05:58:03 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 06:00:05 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 06:17:09 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 06:18:33 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 06:53:00 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 06:53:05 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 06:53:33 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 06:57:22 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 07:08:53 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 07:11:48 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 07:12:59 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 07:13:12 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 07:13:14 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 07:13:16 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 07:13:18 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 07:13:29 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 07:15:00 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 07:15:41 UTC] PHP Fatal error:  Call to a member function hasBtcWallet() on null in /home/cryptoroyal/public_html/account/application/views/page/page_market.php on line 2
+[01-Sep-2018 08:51:57 UTC] PHP Fatal error:  Call to undefined method Marketmodel::get_booking_amount() in /home/cryptoroyal/public_html/account/application/controllers/Order.php on line 23
+[01-Sep-2018 08:55:27 UTC] PHP Fatal error:  Call to undefined method CI_DB_mysqli_result::where() in /home/cryptoroyal/public_html/account/application/models/Marketmodel.php on line 350
+[01-Sep-2018 08:56:41 UTC] PHP Fatal error:  Call to undefined method CI_DB_mysqli_driver::row() in /home/cryptoroyal/public_html/account/application/models/Marketmodel.php on line 352
+[01-Sep-2018 08:56:57 UTC] PHP Fatal error:  Call to undefined method CI_DB_mysqli_driver::result() in /home/cryptoroyal/public_html/account/application/models/Marketmodel.php on line 352

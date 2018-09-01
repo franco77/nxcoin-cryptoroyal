@@ -61,7 +61,7 @@ class Member extends CI_Controller {
 				
 				$this->template->content->view('page/page_' .$filename, TRUE );
 				$this->template->publish('app_template_dashboard');
-				$this->mainmodel->Always_Load();
+				//$this->mainmodel->Always_Load();
 
 			endif;
 

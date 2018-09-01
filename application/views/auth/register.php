@@ -49,7 +49,7 @@
                                 <div class="input-group mb-3">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="check"> Accept <a href="#" target="_blank">Term and Conditions</a>
+                                            <input type="checkbox" name="check"> Accept <a href="http://cryptoroyal.co/assets/Term_And_Conditions.pdf" target="_blank">Term and Conditions</a>
                                         </label>
                                     </div>
 
