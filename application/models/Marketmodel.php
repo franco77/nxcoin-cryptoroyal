@@ -349,7 +349,7 @@ class Marketmodel extends CI_Model {
         return $this->db->select('amount')
         ->from('tb_booking_orders')
         ->where('booking_id', $id)
-        ->get()->row();
+        ->get()->row()->amount;
     } 
     
 	public function lastprice()
