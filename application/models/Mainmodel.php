@@ -98,9 +98,10 @@ class Mainmodel extends CI_Model {
 		$this->db->order_by('id', 'asc');
 		$this->db->where('id != ', '1');
 		$a = $this->db->get('tb_users');
+		$priceNx = $this->walletmodel->getPriceNx();
 		foreach ($a->result() as $key) {
 			$jml = 0;
-			$walletc = $this->walletmodel->cek_balance('C', $key->id) * $this->walletmodel->getPriceNx();
+			$walletc = $this->walletmodel->cek_balance('C', $key->id) * $priceNx;
 			if ($walletc >= 10){
 				$this->db->where('rollover_class', '1'); 
 				$this->db->where('rollover_userid', $key->id);
@@ -123,7 +124,7 @@ class Mainmodel extends CI_Model {
 						'rollover_date'		=> date('Y-m-d H:i:s')
 					);
 					$this->db->insert('tb_rollover', $object);
-					$jml = 10 / $this->walletmodel->getPriceNx();
+					$jml = 10 / $priceNx;
 					$this->walletmodel->pengurangan('C', $jml,$key->id);
 					if ($data['kelas'] != 0){
 						if ($this->updateUrutan('3','1') == true){
