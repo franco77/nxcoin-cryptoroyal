@@ -146,7 +146,6 @@ class Marketmodel extends CI_Model {
     public function pending_orders() {
 
         $res = $this->db->select('*')
-        ->where('user_id', userid())
         ->where('status', 'A')
         ->get('tb_booking_orders')->result();
 
@@ -183,6 +182,7 @@ class Marketmodel extends CI_Model {
 
             $matchAmount = 0;
             $totalBtc = 0;
+            $pairs = 'nxcc-btc';
             if( $booking->amount == $match->amount ) {
                 
                 $this->deactivateBooking($match->booking_id);
@@ -320,12 +320,13 @@ class Marketmodel extends CI_Model {
 
     }
 
-    public function create_order( $buyerId, $sellerId, $price, $amount) {
+    public function create_order( $buyerId, $sellerId, $price, $amount, $pairs = 'nxcc-btc') {
         $data = [
             [
                 'user_id' => $buyerId,
                 'price' => $price,
                 'amount' => $amount,
+                'pair' =>$pairs,
                 'created_at' => date('Y-m-d H:i:s'),
                 'unix_timestamp' => time(),
             ],
@@ -333,6 +334,7 @@ class Marketmodel extends CI_Model {
                 'user_id' => $sellerId,
                 'price' => $price,
                 'amount' => $amount,
+                'pair' =>$pairs,
                 'created_at' => date('Y-m-d H:i:s'),
                 'unix_timestamp' => time(),
             ]
@@ -345,11 +347,11 @@ class Marketmodel extends CI_Model {
         return $this->db->query("SELECT * FROM tb_orders")->row()->price;
     }
         
-    public function get_booking_amount($id=''){
-        return $this->db->select('amount')
+    public function get_booking($id=''){
+        return $this->db->select('*')
         ->from('tb_booking_orders')
         ->where('booking_id', $id)
-        ->get()->row()->amount;
+        ->get()->row();
     } 
     
 	public function lastprice()

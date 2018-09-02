@@ -35,7 +35,7 @@
         <div class="card">
             <div class="card-body">
                 Latest Price :
-                <? echo $this->marketmodel->get_latest_price(); ?>
+                <? echo $this->marketmodel->get_latest_price(); ?> BTC
             </div>
         </div>
     </div>
@@ -233,7 +233,6 @@ google.charts.setOnLoadCallback(drawChart);
                     <table class="table table-hover" id="pending_table">
                         <thead>
                             <tr>
-                                <th>BOOKING ID</th>
                                 <th>PAIR</th>
                                 <th>PRICE</th>
                                 <th>AMOUNT</th>
@@ -247,18 +246,21 @@ google.charts.setOnLoadCallback(drawChart);
                                 <?php foreach( $pendings as $p ) { ?>
                                 
                                 <tr>
-                                    <td><?= $p->booking_id; ?></td>
                                     <td><?= $p->pairs; ?></td>
                                     <td><?= $p->price; ?></td>
                                     <td><?= $p->amount; ?></td>
                                     <td class=<?= ($p->type == 'S') ? 'bg-success' : 'bg-primary'; ?> style="color:#fff"><?= ($p->type == 'S') ? 'SELL' : 'BUY'; ?></td>
                                     <td><?= $p->created_at; ?></td>
+                                    <?php if($p->user_id == userid()){ ?>
                                     <td>
                                         <?php echo form_open(site_url('order/cancel'), array('class' => 'form-horizontal m-t-20', 'id' => 'cancel'.$p->booking_id )); ?>
                                             <input type='hidden' name='id' value="<?= $p->booking_id; ?>">
                                             <button class="btn btn-xs btn-danger" type="submit" form='cancel<?= $p->booking_id; ?>'>Cancel</button>
                                         <?php echo form_close(); ?> 
                                     </td>
+                                    <?php } else {?>
+                                    <td></td>
+                                    <?php }?>
                                 </tr>
 
                                 <?php } ?>
