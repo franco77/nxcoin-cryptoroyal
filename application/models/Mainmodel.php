@@ -98,7 +98,8 @@ class Mainmodel extends CI_Model {
 		$this->db->order_by('id', 'asc');
 		$this->db->where('id != ', '1');
 		$a = $this->db->get('tb_users');
-		$priceNx = $this->walletmodel->getPriceNx();
+		//$priceNx = $this->walletmodel->getPriceNx();
+		$priceNx = $this->marketmodel->get_latest_price('USD');
 		foreach ($a->result() as $key) {
 			$jml = 0;
 			$walletc = $this->walletmodel->cek_balance('C', $key->id) * $priceNx;

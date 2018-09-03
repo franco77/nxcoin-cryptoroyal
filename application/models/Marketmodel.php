@@ -8,6 +8,7 @@ class Marketmodel extends CI_Model {
     protected $adminBtcAddress = '1EiY1JHBLvRvFFCbE6hit52Bxvz9VwdEFC';
     protected $defaultBtcWalletId = 40;
     protected $adminUserId = 1;
+    protected $btcPrice = 0.5;
 	public function __construct()
 	{
         parent::__construct();
@@ -343,8 +344,28 @@ class Marketmodel extends CI_Model {
 
     }
     
-    public function get_latest_price(){
-        return $this->db->query("SELECT * FROM tb_orders")->row()->price;
+    public function get_latest_price($currency = 'BTC'){
+        
+        $result = $this->db->query("SELECT * FROM tb_orders order by order_id desc")->row();
+        if( !$result ) {
+
+            $price = blockchain_to_btc($this->btcPrice, 'USD');
+
+        } else {
+
+            $price = $result->price;
+
+        }
+        switch ($currency) {
+            case 'USD':
+                $price = bcmul("$price",(string) blockchain_exchange('USD'),8);
+                break;
+            
+            default:
+                break;
+        }
+        //return $this->db->query("SELECT * FROM tb_orders order by order_id desc")->row()->price;
+        return $price;
     }
         
     public function get_booking($id=''){

@@ -49,7 +49,9 @@
                             </div>
                             <div style="margin-left: 10px">
                                 <h3 class="text-white mb-0">
-                                    <?php $a = $this->walletmodel->cek_balance('C') * $this->walletmodel->getPriceNx(); 
+                                    <?php
+                                        //$a = $this->walletmodel->cek_balance('C') * $this->walletmodel->getPriceNx();
+                                        $a = $this->walletmodel->cek_balance('C') * $this->marketmodel->get_latest_price('USD');
                                         echo '$ '.number_format($a,2,'.',',');
                                      ?></h3>
                                 <span class="text-white op-5">Jackpot Wallet</span>

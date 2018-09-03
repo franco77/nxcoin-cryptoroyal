@@ -16,7 +16,8 @@ class Apis extends CI_Controller {
 
 	public function getLast_price($value='')
 	{
-		echo $this->walletmodel->getPriceNx();
+		//echo $this->walletmodel->getPriceNx();
+		echo $this->marketmodel->get_latest_price('USD');
 	}
 
 	/**

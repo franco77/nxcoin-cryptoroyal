@@ -35,7 +35,7 @@
         <div class="card">
             <div class="card-body">
                 Latest Price :
-                <? echo $this->marketmodel->get_latest_price(); ?> BTC
+                <?php echo $this->marketmodel->get_latest_price(); ?> BTC
             </div>
         </div>
     </div>
