@@ -5,7 +5,10 @@ class Order extends CI_Controller {
     protected $defaultWalletId = 1;
     protected $defaultWalletBtcId = 40;
     protected $adminBtcAddress = '1EiY1JHBLvRvFFCbE6hit52Bxvz9VwdEFC';
-
+    protected $minprice = [
+        'BTC' => 0,
+        'USD' => 0.5
+    ];
 	public function __construct()
 	{
 		
@@ -13,8 +16,9 @@ class Order extends CI_Controller {
 
 		$this->output->set_header("Pragma: no-cache");
         $this->output->set_header("Cache-Control: no-store, no-cache");
-		$this->output->set_content_type('application/json');
-
+        $this->output->set_content_type('application/json');
+        
+        $this->minprice['BTC'] =blockchain_to_btc($this->minprice['USD'],'USD');
     }
 
     public function cancel(){
@@ -47,6 +51,18 @@ class Order extends CI_Controller {
         $price = post('price');
         $amount = str_replace(',','',post('amount'));
 
+        $minprice = $this->minprice['BTC'];
+
+        if( $price < $minprice ) {
+            return $this->output->set_output(json_encode([
+                'message' => 'Minimum price is '.$minprice,
+                'heading' => 'failed',
+                'type' => 'warning',
+                'status' => 0,
+                'csrf_data' => $this->security->get_csrf_hash()
+            
+            ]));
+        }
         if(!$btcAddress) {
 
             return $this->output->set_output(json_encode([
@@ -130,6 +146,21 @@ class Order extends CI_Controller {
 
         $price = post('price');
         $amount = str_replace(',','',post('amount'));
+
+        $minprice = $this->minprice['BTC'];
+
+        if( $price < $minprice ) {
+
+            return $this->output->set_output(json_encode([
+                'message' => 'Minimum price is '.$minprice,
+                'heading' => 'failed',
+                'type' => 'warning',
+                'status' => 0,
+                'csrf_data' => $this->security->get_csrf_hash()
+            
+            ]));
+            
+        }
 
         if(!$btcWallet) {
 
