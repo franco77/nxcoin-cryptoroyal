@@ -28,7 +28,6 @@ class Wallet extends CI_Controller {
             $balance = $this->{$method}();
         }
 
-        sleep(3); //remove this
         $this->benchmark->mark('e');
         return response([
             'data' => [
@@ -40,7 +39,6 @@ class Wallet extends CI_Controller {
     }
 
     private function btc() {
-        return 0.0000549; // remove this
         $btc = $this->marketmodel->blockchain->address_balance(
             $this->address['BTC']
         );
@@ -53,7 +51,6 @@ class Wallet extends CI_Controller {
 
     }
     private function nxcc() {
-        //return 1000; //remove this
         return (float) number_format($this->walletmodel->cek_balance('A'),8);
     }
 
