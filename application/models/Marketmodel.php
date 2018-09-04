@@ -144,11 +144,19 @@ class Marketmodel extends CI_Model {
         return $insertId;
     }
 
-    public function pending_orders() {
+    public function pending_orders($byUser = TRUE, $type = NULL) {
 
-        $res = $this->db->select('*')
-        ->where('status', 'A')
-        ->get('tb_booking_orders')->result();
+        $this->db->select('*')->where('status', 'A');
+
+        if($byUser) {
+
+            $this->db->where('user_id',userid());
+
+        }
+        if($type !== NULL) {
+            $this->db->where('type',$type);
+        }
+        $res = $this->db->get('tb_booking_orders')->result();
 
         if( !$res ) {
             return [];

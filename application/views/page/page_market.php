@@ -1,3 +1,4 @@
+<meta name="csrf-token" content="<?= $this->security->get_csrf_hash() ?>">
 <?php
     $btcWallet = $this->marketmodel->hasBtcWallet();
     $nxccBalance = $this->walletmodel->cek_balance('A');
@@ -23,13 +24,20 @@
     
     $pendings = $this->marketmodel->pending_orders();
     $orders = NULL;
+    $markets_sell = $this->marketmodel->pending_orders(FALSE,'S');
+    $markets_buy = $this->marketmodel->pending_orders(FALSE,'B');
 
 ?>
 
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
+<style>
+#market_sell > tbody > tr,
+#market_buy > tbody > tr {
+    cursor:pointer !important;
+}
+</style>
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
@@ -193,7 +201,7 @@ google.charts.setOnLoadCallback(drawChart);
                         <?php if(userid() != 43){
                             
                         //fungsi sementara untuk development internal market
-                            $btcBalance = convertToBTCFromSatoshi($btcBalance['balance']); 
+                            $btcBalance = convertToBTCFromSatoshi($btcBalance['balance']);
                         }?>
                         <label for="">Your BTC Balance: <?php echo $btcBalance ?> BTC</label>
                     </div>
@@ -224,11 +232,84 @@ google.charts.setOnLoadCallback(drawChart);
     </div>
 </div>
 
+
+<div class="row">
+
+    <!-- SELL -->
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h5>Market SELL</h5>
+                
+                <div class="table-responsive">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="market_sell">
+                            <thead>
+                                <tr>
+                                    <th>Price</th>
+                                    <th>NXCC</th>
+                                    <th>BTC</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach( $markets_sell as $ms ) { ?>
+                                    <tr>
+                                        <td><?= $ms->price ?></td>
+                                        <td><?= $ms->amount ?></td>
+                                        <td><?= str_replace(',','',number_format($ms->price * $ms->amount,8) ); ?></td>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/ SELL -->
+
+    <!-- BUY -->
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h5>Market BUY</h5>
+                
+                <div class="table-responsive">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="market_buy">
+                            <thead>
+                                <tr>
+                                    <th>Price</th>
+                                    <th>NXCC</th>
+                                    <th>BTC</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach( $markets_buy as $mb ) { ?>
+                                    <tr>
+                                        <td><?= $mb->price ?></td>
+                                        <td><?= $mb->amount ?></td>
+                                        <td><?= str_replace(',','',number_format($mb->price * $mb->amount,8) ); ?></td>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/ BUY -->
+
+</div>
+
+
+
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
     		<div class="card-body">
-                <h5>Pending Order</h5>
+                <h5>Your Pending Order</h5>
                 <div class="table-responsive">
                     <table class="table table-hover" id="pending_table">
                         <thead>
@@ -253,10 +334,9 @@ google.charts.setOnLoadCallback(drawChart);
                                     <td><?= $p->created_at; ?></td>
                                     <?php if($p->user_id == userid()){ ?>
                                     <td>
-                                        <?php echo form_open(site_url('order/cancel'), array('class' => 'form-horizontal m-t-20', 'id' => 'cancel'.$p->booking_id )); ?>
-                                            <input type='hidden' name='id' value="<?= $p->booking_id; ?>">
-                                            <button class="btn btn-xs btn-danger" type="submit" form='cancel<?= $p->booking_id; ?>'>Cancel</button>
-                                        <?php echo form_close(); ?> 
+                                        
+                                        <button data-bookingid="<?= $p->booking_id ?>" type="button" class="btn btn-danger btn_cancel">cancel</button>
+                                        
                                     </td>
                                     <?php } else {?>
                                     <td></td>
@@ -280,7 +360,7 @@ google.charts.setOnLoadCallback(drawChart);
     <div class="col-lg-12">
         <div class="card">
     		<div class="card-body">
-                <h5>Order History</h5>
+                <h5>Your Order History</h5>
                 <div class="table-responsive">
                     <table class="table table-hover" id="order_history">
                         <thead>
@@ -298,7 +378,8 @@ google.charts.setOnLoadCallback(drawChart);
                                 <?php foreach( $orders as $o ) { ?>
                                 
                                 <tr>
-                                    <td><?= $o->booking_id; ?></td>
+                                    
+                                    <td><?= $o->order_id; ?></td>
                                     <td><?= $o->pairs; ?></td>
                                     <td><?= $o->price; ?></td>
                                     <td><?= $o->amount; ?></td>
@@ -320,8 +401,13 @@ google.charts.setOnLoadCallback(drawChart);
 
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script>
+var nx_token = $("meta[name=csrf-token]").attr('content');
 $(document).ready(function() {
 
+var pending_table   = $('#pending_table').DataTable({ "order": [[ 4, "desc" ]] });
+var order_history   = $('#order_history').DataTable({ "order": [[ 5, "desc" ]]});
+var market_sell     = $('#market_sell').DataTable();
+var market_buy      = $('#market_buy').DataTable();
 
 $("#sell_nxcc").submit( function(e) {
     e.preventDefault();
@@ -334,10 +420,11 @@ $("#sell_nxcc").submit( function(e) {
         data: $('#sell_nxcc').serialize(),
         error: function(err) {
             console.log(err);
-        }
+        },
 
     }).done(function(res) {
-        $('#sell_nxcc input[name=csrf_nx]').val( res.csrf_data );
+        //$('#sell_nxcc input[name=csrf_nx]').val( res.csrf_data );
+        refreshToken(res.csrf_data);
         swal({
                 
             heading: res.heading,
@@ -345,9 +432,29 @@ $("#sell_nxcc").submit( function(e) {
             type: res.type
 
         }).then( function() {
+            var sell = res.data;
+            
+            // if( res.status ){
+            //     window.location.href='<?php echo site_url('market') ?>';
+            // }
+            if(res.status) {
 
-            if( res.status ){
-                window.location.href='<?php echo site_url('market') ?>';
+                market_sell.row.add([
+                    sell.price,
+                    sell.amount,
+                    sell.total
+                ]).draw();
+
+                pending_table.row.add([
+
+                    sell.pair,
+                    sell.price,
+                    sell.amount,
+                    'SELL',
+                    sell.time,
+                    '<button data-bookingid="'+sell.bookingId+'" type="button" class="btn btn-danger">cancel</button>'
+
+                ]).draw();
             }
             
         });
@@ -371,7 +478,8 @@ $("#buy_nxcc").submit( function(e) {
         }
 
     }).done(function(res) {
-        $('#buy_nxcc input[name=csrf_nx]').val( res.csrf_data );
+        //$('#buy_nxcc input[name=csrf_nx]').val( res.csrf_data );
+        refreshToken(res.csrf_data);
         swal({
                 
             heading: res.heading,
@@ -380,9 +488,29 @@ $("#buy_nxcc").submit( function(e) {
 
         }).then( function() {
 
-            if( res.status ){
-                window.location.href='<?php echo site_url('market') ?>';
+            // if( res.status ){
+            //     window.location.href='<?php echo site_url('market') ?>';
+            // }
+            var buy = res.data;
+            if(res.status) {
+                market_buy.row.add([
+                    buy.price,
+                    buy.amount,
+                    buy.total
+                ]).draw();
+
+                pending_table.row.add([
+
+                    buy.pair,
+                    buy.price,
+                    buy.amount,
+                    'BUY',
+                    buy.time,
+                    '<button data-bookingid="'+buy.bookingId+'" type="button" class="btn btn-danger">cancel</button>'
+
+                ]).draw();
             }
+            
             
         });
 
@@ -393,8 +521,47 @@ $("#buy_nxcc").submit( function(e) {
 
 
 
-$('#pending_table').DataTable();
-$('#order_history').DataTable();
+
+
+$('#market_sell tbody').on('click','tr', function() {
+    if ( $(this).hasClass('selected') ) {
+        $(this).removeClass('selected');
+    }
+    else {
+        market_sell.$('tr.selected').removeClass('selected');
+        $(this).addClass('selected');
+    }
+    var data = market_sell.row(this).data();
+    var amount = data[1];
+    var price = data[0];
+    calcSell(amount,price);
+    calcBuy(amount,price);
+});
+
+
+$('#market_buy tbody').on('click','tr', function() {
+    if ( $(this).hasClass('selected') ) {
+        $(this).removeClass('selected');
+    }
+    else {
+        market_buy.$('tr.selected').removeClass('selected');
+        $(this).addClass('selected');
+    }
+    var data = market_buy.row(this).data();
+    var amount = data[1];
+    var price = data[0];
+
+    calcSell(amount,price);
+    calcBuy(amount,price);
+});
+
+function addToForm(tipe,price,amount) {
+    if(tipe == 'S') {
+        calcSell(amount,price);
+    } else {
+        calcBuy(amount,price);
+    }
+}
 
 const fee = 1.4;
 
@@ -402,20 +569,81 @@ $("#sell_amount,#sell_price").on('change', function(e) {
     e.preventDefault();
     let amount = $("#sell_amount").val();
     let price = $("#sell_price").val();
+    calcSell(amount,price);
+});
+
+function calcSell(amount, price) {
     let total = price * amount;
     let fee_amount = ( total * fee ) / 100;
+    $("#sell_amount").val(amount);
+    $("#sell_price").val(price);
     $("#sell_fee").val(fee_amount);
     $("#sell_total").val( total - fee_amount );
-});
+}
+
+function calcBuy(amount,price) {
+    let total = price * amount;
+    let fee_amount = ( total * fee ) / 100;
+    $("#buy_amount").val(amount);
+    $("#buy_price").val(price);
+    $("#buy_fee").val(fee_amount);
+    $("#buy_total").val( total - fee_amount );
+}
 $("#buy_amount,#buy_price").on('change', function(e) {
     e.preventDefault();
     let amount = $("#buy_amount").val();
     let price = $("#buy_price").val();
-    let total = price * amount;
-    let fee_amount = ( total * fee ) / 100;
-    $("#buy_fee").val(fee_amount);
-    $("#buy_total").val( total - fee_amount );
+    calcBuy(amount,price);
+});
+
+
+function cancelOrder(el) {
+    
+}
+
+$('.btn_cancel').each(function() {
+
+    $(this).on('click', function(e) {
+        e.preventDefault();
+
+        $('body').loading();
+        var bookingid = $(this).data('bookingid');
+        var el = $(this).parent().parent();
+        $.ajax({
+            method : 'post',
+            url: '<?= site_url('order/cancel') ?>',
+            data: {
+                id: bookingid,
+                csrf_nx: NXTOKEN()
+            },
+            success: function(res) {
+                pending_table.row( el ).remove().draw();
+            }
+        }).done(function(res) {
+            refreshToken(res.csrf_data);
+
+            swal({
+                
+                heading: res.heading,
+                html: res.message,
+                type: res.type
+    
+            });
+
+        }).always( function() { $('body').loading('stop'); });
+    })
 })
+
+function refreshToken(token) {
+    $("meta[name=csrf-token]").attr('content',token);
+    $('input[name=csrf_nx]').each(function() {
+        $(this).val(token);
+    })
+}
+function NXTOKEN() {
+    return $("meta[name=csrf-token]").attr('content');
+}
+
 
 });
 
