@@ -452,9 +452,10 @@ $("#sell_nxcc").submit( function(e) {
                     sell.amount,
                     'SELL',
                     sell.time,
-                    '<button data-bookingid="'+sell.bookingId+'" type="button" class="btn btn-danger">cancel</button>'
+                    '<button data-bookingid="'+sell.bookingId+'" type="button" class="btn btn-danger btn_cancel">cancel</button>'
 
                 ]).draw();
+                initCancelButton();
             }
             
         });
@@ -506,9 +507,10 @@ $("#buy_nxcc").submit( function(e) {
                     buy.amount,
                     'BUY',
                     buy.time,
-                    '<button data-bookingid="'+buy.bookingId+'" type="button" class="btn btn-danger">cancel</button>'
+                    '<button data-bookingid="'+buy.bookingId+'" type="button" class="btn btn-danger btn_cancel">cancel</button>'
 
                 ]).draw();
+                //initCancelButton();
             }
             
             
@@ -597,8 +599,39 @@ $("#buy_amount,#buy_price").on('change', function(e) {
 });
 
 
-function cancelOrder(el) {
-    
+function initCancelButton() {
+    $('.btn_cancel').each(function() {
+
+        $(this).on('click', function(e) {
+            e.preventDefault();
+
+            $('body').loading();
+            var bookingid = $(this).data('bookingid');
+            var el = $(this).parent().parent();
+            $.ajax({
+                method : 'post',
+                url: '<?= site_url('order/cancel') ?>',
+                data: {
+                    id: bookingid,
+                    csrf_nx: NXTOKEN()
+                },
+                success: function(res) {
+                    pending_table.row( el ).remove().draw();
+                }
+            }).done(function(res) {
+                refreshToken(res.csrf_data);
+
+                swal({
+                    
+                    heading: res.heading,
+                    html: res.message,
+                    type: res.type
+
+                });
+
+            }).always( function() { $('body').loading('stop'); });
+        })
+    });
 }
 
 $('.btn_cancel').each(function() {
