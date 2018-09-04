@@ -101,6 +101,7 @@
                     </div>
                 </div>
             </div>
+            <script src="<?= site_url('assets/croyal/UserBalance.js'); ?>"></script>
             <div style="display: none" id="badge">
                 <?php echo $this->load->view('library/badge', '', TRUE); ?>
             </div> 
@@ -157,6 +158,7 @@
             echo script_tag( $js )."\n";
         }
     ?>
+    
     <script type="text/javascript">
 
 
@@ -237,7 +239,11 @@
           })
         });
       });
-
+    
+    var env = {
+        site_url: '<?= base_url(); ?>',
+    };
+    var CR_USERID = '<?= userid(); ?>';
 
 
     </script>

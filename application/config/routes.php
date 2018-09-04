@@ -9,3 +9,5 @@ $route['(:any)'] 					= 'member/view/$1';
 $route['welcome'] 					= 'welcome/index';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+$route['wallet/balance/(:any)'] = 'wallet/balance/$1';

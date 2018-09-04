@@ -500,3 +500,16 @@ if ( ! function_exists( 'time_span' ) ) {
     }
 
 }
+
+if( ! function_exists( 'response' ) ) {
+
+
+	function response($data, $code = 200) {
+
+		$ci =& get_instance();
+		$ci->load->library('response');
+		return $ci->response->create($data,$code);
+
+	}
+
+}

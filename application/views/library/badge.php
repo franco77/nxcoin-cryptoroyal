@@ -59,7 +59,28 @@
                         </div>
                     </div> 
                 </div>
+                
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                        <div class="info d-flex align-items-center">
+                            <div class="m-r-10">
+                                <img src="http://pngimg.com/uploads/bitcoin/bitcoin_PNG47.png" style="width: 45px; filter: brightness(0) invert(1);">
+                            </div>
+                            <div style="margin-left: 10px">
+                                <h3 id="btcBalance" class="text-white mb-0"></h3>
+                                <span class="text-white op-5">BTC Wallet</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
             </div>
         </div>
     </div>
 </div>
+
+<script>
+$(document).ready(function() {
+    $("#btcBalance").UserBalance({type:'btc'}).get();;
+});
+</script>
