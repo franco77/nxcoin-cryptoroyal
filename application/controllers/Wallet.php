@@ -51,7 +51,7 @@ class Wallet extends CI_Controller {
 
     }
     private function nxcc() {
-        return $this->walletmodel->cek_balance('A');
+        return currency($this->walletmodel->cek_balance('A'),'2','');
     }
 
 }
