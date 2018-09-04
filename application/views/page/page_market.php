@@ -1,7 +1,7 @@
 <meta name="csrf-token" content="<?= $this->security->get_csrf_hash() ?>">
 <?php
     $btcWallet = $this->marketmodel->hasBtcWallet();
-    $nxccBalance = $this->walletmodel->cek_balance('A');
+    //$nxccBalance = $this->walletmodel->cek_balance('A');
     $btcBalance = null;
 
     if( !$btcWallet ) {
@@ -14,12 +14,12 @@
 
     }
     //fungsi sementara untuk development internal market
-    if(userid() != 43){
-        $btcBalance = $this->marketmodel->blockchain->address_balance($btcWallet);
-    }
-    else{
-        $btcBalance = $this->walletmodel->cek_balance('BTC',43);
-    }
+    // if(userid() != 43){
+    //     $btcBalance = $this->marketmodel->blockchain->address_balance($btcWallet);
+    // }
+    // else{
+    //     $btcBalance = $this->walletmodel->cek_balance('BTC',43);
+    // }
     //end fungsi
     
     $pendings = $this->marketmodel->pending_orders();
@@ -162,7 +162,7 @@ google.charts.setOnLoadCallback(drawChart);
                 <?php echo form_open('', array('class' => 'form-horizontal m-t-20', 'id' => 'sell_nxcc' )); ?>
                     <legend>SELL NXCC</legend>
                     <div class="form-group">
-                        <label for="">Your NXCC Balance: <?= $nxccBalance; ?> NXCC</label>
+                        <label for="">Your NXCC Balance: <span class="nxccBalance"></span></label>
                     </div>
                     <div class="form-group">
                         <label>Amount</label>
@@ -198,12 +198,8 @@ google.charts.setOnLoadCallback(drawChart);
                     <legend>BUY NXCC</legend>
                     <div class="form-group">
                         
-                        <?php if(userid() != 43){
-                            
-                        //fungsi sementara untuk development internal market
-                            $btcBalance = convertToBTCFromSatoshi($btcBalance['balance']);
-                        }?>
-                        <label for="">Your BTC Balance: <?php echo $btcBalance ?> BTC</label>
+                        
+                        <label for="">Your BTC Balance: <span class="btcBalance"></span></label>
                     </div>
                     <div class="form-group">
                         <label>Amount</label>
@@ -400,6 +396,8 @@ google.charts.setOnLoadCallback(drawChart);
 </div>
 
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+
 <script>
 var nx_token = $("meta[name=csrf-token]").attr('content');
 $(document).ready(function() {
@@ -676,7 +674,10 @@ function refreshToken(token) {
 function NXTOKEN() {
     return $("meta[name=csrf-token]").attr('content');
 }
-
+$("#badge").show();
+$('#breadcrumb').hide();
+var btcBalance = $(".btcBalance").UserBalance({type: 'btc' }).get();
+var nxccBalance = $(".nxccBalance").UserBalance({ type:'nxcc'}).get();
 
 });
 
