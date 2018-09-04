@@ -27,7 +27,16 @@ class Order extends CI_Controller {
             $this->walletmodel->pengurangan('A', ($amount * -1), userid(), 'BOOKING CANCEL');
             $this->marketmodel->deactivateBooking(post('id'));
         }
-        redirect($_SERVER['HTTP_REFERER']);
+        //redirect($_SERVER['HTTP_REFERER']);
+
+        $data = [
+            'message' => 'Your order has been canceled.',
+            'heading' => 'Success',
+            'type' => 'success',
+            'status' => 1,
+            'csrf_data' => $this->security->get_csrf_hash(),
+        ];
+        return $this->output->set_output(json_encode($data));
     }
     public function sell() {
         $this->load->model('marketmodel');
@@ -91,6 +100,15 @@ class Order extends CI_Controller {
             'type' => 'success',
             'status' => 1,
             'csrf_data' => $this->security->get_csrf_hash(),
+            'data' => [
+                'pair' => 'nxcc-btc',
+                'price' => $price,
+                'amount' => $amount,
+                'total' => $price * $amount,
+                'type' => 'S',
+                'time' => sekarang(),
+                'bookingId' => $bookingId
+            ]
         ];
         $matches = $this->marketmodel->findMatch($price, userid(), 'B');
 
@@ -206,6 +224,14 @@ class Order extends CI_Controller {
             'type' => 'success',
             'status' => 1,
             'csrf_data' => $this->security->get_csrf_hash(),
+            'data' => [
+                'pair' => 'nxcc-btc',
+                'price' => $price,
+                'amount' => $amount,
+                'total' => $price * $amount,
+                'type' => 'B',
+                'time' => sekarang()
+            ]
         ];
 
         $matches = $this->marketmodel->findMatch($price, userid(), 'S');
