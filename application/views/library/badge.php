@@ -26,7 +26,7 @@
                                 <img src="assets/logo-nx.png" style="width: 75px;">
                             </div>
                             <div style="margin-left: 10px">
-                                <h3 class="text-white mb-0"><?php echo currency($this->walletmodel->cek_balance('A'),'2','') ?></h3>
+                                <h3 id="nxcBalance" class="text-white mb-0"></h3>
                                 <span class="text-white op-5">NXCC Wallet</span>
                             </div>
                         </div>
@@ -81,6 +81,8 @@
 
 <script>
 $(document).ready(function() {
-    $("#btcBalance").UserBalance({type:'btc'}).get();;
+    document.USERBTCBALANCE = $("#btcBalance").UserBalance({type:'btc'}).get();
+    document.USERNXCBALANCE = $("#nxcBalance").UserBalance({type:'nxcc'}).get();
+    
 });
 </script>

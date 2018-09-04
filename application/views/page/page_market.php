@@ -454,6 +454,7 @@ $("#sell_nxcc").submit( function(e) {
 
                 ]).draw();
                 initCancelButton();
+                refreshBalance();
             }
             
         });
@@ -508,7 +509,8 @@ $("#buy_nxcc").submit( function(e) {
                     '<button data-bookingid="'+buy.bookingId+'" type="button" class="btn btn-danger btn_cancel">cancel</button>'
 
                 ]).draw();
-                //initCancelButton();
+                initCancelButton();
+                refreshBalance();
             }
             
             
@@ -615,6 +617,7 @@ function initCancelButton() {
                 },
                 success: function(res) {
                     pending_table.row( el ).remove().draw();
+                    refreshBalance();
                 }
             }).done(function(res) {
                 refreshToken(res.csrf_data);
@@ -649,6 +652,7 @@ $('.btn_cancel').each(function() {
             },
             success: function(res) {
                 pending_table.row( el ).remove().draw();
+                refreshBalance();
             }
         }).done(function(res) {
             refreshToken(res.csrf_data);
@@ -670,6 +674,12 @@ function refreshToken(token) {
     $('input[name=csrf_nx]').each(function() {
         $(this).val(token);
     })
+}
+function refreshBalance() {
+    document.USERBTCBALANCE.refresh();
+    document.USERNXCBALANCE.refresh();
+    btcBalance.refresh();
+    nxccBalance.refresh();
 }
 function NXTOKEN() {
     return $("meta[name=csrf-token]").attr('content');
