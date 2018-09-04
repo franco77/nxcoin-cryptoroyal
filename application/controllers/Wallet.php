@@ -51,7 +51,7 @@ class Wallet extends CI_Controller {
 
     }
     private function nxcc() {
-        return (float) number_format($this->walletmodel->cek_balance('A'),8);
+        return $this->walletmodel->cek_balance('A');
     }
 
 }
