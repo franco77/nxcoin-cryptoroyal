@@ -386,7 +386,7 @@ class Marketmodel extends CI_Model {
 	public function lastprice( $limit = 10 )
 	{
         return $this->db->query("
-        SELECT *, TRUNCATE ( (( d.open_price / d.close_price ) * 100), 2 ) as changes FROM (
+        SELECT *, TRUNCATE ( ( ( ( d.close_price - d.open_price ) / d.close_price ) * 100), 2 ) as changes FROM (
             SELECT
                 MAX(price) as high_price, 
                 SUM(amount) as volume,
