@@ -32,18 +32,14 @@
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<style>
-#market_sell > tbody > tr,
-#market_buy > tbody > tr {
-    cursor:pointer !important;
-}
-</style>
+<script src="<?= site_url('assets/croyal/CrPrice.js'); ?>"></script>
+<link rel="stylesheet" href="<?= site_url('assets/croyal/CrPrice.css'); ?>">
+
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-5">
         <div class="card">
-            <div class="card-body">
-                Latest Price :
-                <?php echo $this->marketmodel->get_latest_price(); ?> BTC
+            <div class="card-body" style="padding:0px !important;">
+                <div id="badge_prices"></div>
             </div>
         </div>
     </div>
@@ -688,6 +684,9 @@ $("#badge").show();
 $('#breadcrumb').hide();
 var btcBalance = $(".btcBalance").UserBalance({type: 'btc' }).get();
 var nxccBalance = $(".nxccBalance").UserBalance({ type:'nxcc'}).get();
+
+
+var badge = $("#badge_prices").CrPrice({test:'test'}).get();
 
 });
 

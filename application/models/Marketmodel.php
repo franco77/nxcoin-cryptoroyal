@@ -383,20 +383,40 @@ class Marketmodel extends CI_Model {
         ->get()->row();
     } 
     
-	public function lastprice()
+	public function lastprice( $limit = 10 )
 	{
-		return $this->db->select("MAX(price) as high_price, 
-		    SUM(amount) as volume,
-		    MIN(price) as low_price, 
-		    MAX(created_at) as created_at,
-		    SUBSTRING_INDEX(GROUP_CONCAT(CAST(price AS CHAR)  ORDER BY created_at DESC SEPARATOR ','), ',', 1 ) as close_price,
-		    SUBSTRING_INDEX(GROUP_CONCAT(CAST(price AS CHAR)  ORDER BY created_at SEPARATOR ','), ',', 1 ) as open_price,
-		    UNIX_TIMESTAMP(created_at) DIV 1800 AS timekey")
-		    ->from('tb_booking_orders')
-		    ->where('type', 's')
-		    ->where('created_at >', 'DATE_SUB(CURDATE(), INTERVAL 1 DAY)')
-		    ->group_by('timekey')
-		    ->get()->result();
+        return $this->db->query("
+        SELECT *, ( ( d.open_price / d.close_price ) * 100 ) as changes FROM (
+            SELECT
+                MAX(price) as high_price, 
+                SUM(amount) as volume,
+                COUNT(booking_id) as count_booking,
+                MIN(price) as low_price, 
+                MAX(created_at) as created_at,
+                SUBSTRING_INDEX(GROUP_CONCAT(CAST(price AS CHAR)  ORDER BY created_at DESC SEPARATOR ','), ',', 1 ) as close_price,
+                SUBSTRING_INDEX(GROUP_CONCAT(CAST(price AS CHAR)  ORDER BY created_at SEPARATOR ','), ',', 1 ) as open_price,
+                UNIX_TIMESTAMP(created_at) DIV 1800 AS timekey
+
+            FROM tb_booking_orders
+            WHERE type = 's'
+                AND created_at > DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+            GROUP BY timekey
+            ORDER BY timekey DESC
+        ) as d
+        ")->result();
+		// return $this->db->select("MAX(price) as high_price, 
+        //     SUM(amount) as volume,
+        //     COUNT(booking_id) as count_booking,
+		//     MIN(price) as low_price, 
+        //     MAX(created_at) as created_at,
+		//     SUBSTRING_INDEX(GROUP_CONCAT(CAST(price AS CHAR)  ORDER BY created_at DESC SEPARATOR ','), ',', 1 ) as close_price,
+		//     SUBSTRING_INDEX(GROUP_CONCAT(CAST(price AS CHAR)  ORDER BY created_at SEPARATOR ','), ',', 1 ) as open_price,
+		//     UNIX_TIMESTAMP(created_at) DIV 1800 AS timekey")
+		//     ->from('tb_booking_orders')
+		//     ->where('type', 's')
+		//     ->where('created_at <', 'DATE_SUB(CURDATE(), INTERVAL 1 DAY)')
+		//     ->group_by('timekey')
+		//     ->get()->result();
 	}
 
 

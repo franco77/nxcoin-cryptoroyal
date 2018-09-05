@@ -1,0 +1,22 @@
+#market_sell > tbody > tr,
+#market_buy > tbody > tr {
+    cursor:pointer !important;
+}
+#tb_crPrice {
+    font-size: 12px !important;
+    margin-bottom:0 !important;
+}
+#tb_crPrice > tbody > tr > td {
+    padding: 3px !important;
+}
+#tb_crPrice > tbody > tr > td > label {
+    line-height: 0px !important;
+    margin-bottom: none !important;
+    font-weight:bold !important;
+}
+.cr_price_down {
+    color: red !important;
+}
+.cr_price_up {
+    color: green !important;
+}
