@@ -15,7 +15,7 @@ $(document).ready(function() {
     +'</table>';
     $.fn.CrPrice = function(options) {
 
-        var url = env.site_url + 'order/lastprice';
+        var url = env.site_url + 'order/lastprice/86400';
         var _this = this;
 
         this.onSuccess = function(res) {
