@@ -217,13 +217,16 @@ class Marketmodel extends CI_Model {
             $buyerId = ($match->type == 'B') ? $match->user_id : $booking->user_id;
             $sellerId = ($match->type == 'S') ? $match->user_id : $booking->user_id;
 
+            $sellId = ($match->type == 'S') ? $match->booking_id : $booking->booking_id;
+            $buyId = ($match->type == 'B') ? $match->booking_id : $booking->booking_id;
+
             $totalBtc = ($match->price * $matchAmount);
             $fee = ($totalBtc * 1.4) / 100;
             $totalSendBtc = $totalBtc - $fee;
 
             $this->incrNxccBalance($buyerId, $matchAmount);
             $this->incrBtcBalance($sellerId, $totalSendBtc, $fee);
-            $this->create_order($buyerId, $sellerId, $match->price, $matchAmount);
+            $this->create_order($buyId, $sellId, $match->price, $matchAmount);
 
         }
 
@@ -329,26 +332,36 @@ class Marketmodel extends CI_Model {
 
     }
 
-    public function create_order( $buyerId, $sellerId, $price, $amount, $pairs = 'nxcc-btc') {
+    public function create_order( $buyId, $sellId, $price, $amount, $pairs = 'nxcc-btc') {
+        
         $data = [
-            [
-                'user_id' => $buyerId,
-                'price' => $price,
-                'amount' => $amount,
-                'pair' =>$pairs,
-                'created_at' => date('Y-m-d H:i:s'),
-                'unix_timestamp' => time(),
-            ],
-            [
-                'user_id' => $sellerId,
-                'price' => $price,
-                'amount' => $amount,
-                'pair' =>$pairs,
-                'created_at' => date('Y-m-d H:i:s'),
-                'unix_timestamp' => time(),
-            ]
+            'price'         => $price,
+            'amount'        => $amount,
+            'buy_id'        => $buyId,
+            'sell_id'       => $sellId,
+            'pair'          => $pairs,
+            'created_at'    => date('Y-m-d H:i:s'),
+            'unix_timestamp'=> time(),
         ];
-        $this->db->insert_batch('tb_orders', $data);
+        // $data = [
+            //     [
+            //         'user_id' => $buyerId,
+            //         'price' => $price,
+            //         'amount' => $amount,
+            //         'pair' =>$pairs,
+            //         'created_at' => date('Y-m-d H:i:s'),
+            //         'unix_timestamp' => time(),
+            //     ],
+            //     [
+            //         'user_id' => $sellerId,
+            //         'price' => $price,
+            //         'amount' => $amount,
+            //         'pair' =>$pairs,
+            //         'created_at' => date('Y-m-d H:i:s'),
+            //         'unix_timestamp' => time(),
+            //     ]
+        // ];
+        $this->db->insert('tb_orders', $data);
 
     }
     
@@ -390,16 +403,15 @@ class Marketmodel extends CI_Model {
             SELECT
                 MAX(price) as high_price, 
                 SUM(amount) as volume,
-                COUNT(booking_id) as count_booking,
+                COUNT(order_id) as count_booking,
                 MIN(price) as low_price, 
                 MAX(created_at) as created_at,
                 SUBSTRING_INDEX(GROUP_CONCAT(CAST(price AS CHAR)  ORDER BY created_at DESC SEPARATOR ','), ',', 1 ) as close_price,
                 SUBSTRING_INDEX(GROUP_CONCAT(CAST(price AS CHAR)  ORDER BY created_at SEPARATOR ','), ',', 1 ) as open_price,
                 UNIX_TIMESTAMP(created_at) DIV $div AS timekey
 
-            FROM tb_booking_orders
-            WHERE type = 's'
-                AND created_at > DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+            FROM tb_orders
+            WHERE created_at > DATE_SUB(CURDATE(), INTERVAL 1 DAY)
             GROUP BY timekey
             ORDER BY timekey DESC
         ) as d
