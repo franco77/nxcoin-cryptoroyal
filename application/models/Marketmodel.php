@@ -383,7 +383,7 @@ class Marketmodel extends CI_Model {
         ->get()->row();
     } 
     
-	public function lastprice( $limit = 10 )
+	public function lastprice( $div = 1800 )
 	{
         return $this->db->query("
         SELECT *, TRUNCATE ( ( ( ( d.close_price - d.open_price ) / d.close_price ) * 100), 2 ) as changes FROM (
@@ -395,7 +395,7 @@ class Marketmodel extends CI_Model {
                 MAX(created_at) as created_at,
                 SUBSTRING_INDEX(GROUP_CONCAT(CAST(price AS CHAR)  ORDER BY created_at DESC SEPARATOR ','), ',', 1 ) as close_price,
                 SUBSTRING_INDEX(GROUP_CONCAT(CAST(price AS CHAR)  ORDER BY created_at SEPARATOR ','), ',', 1 ) as open_price,
-                UNIX_TIMESTAMP(created_at) DIV 1800 AS timekey
+                UNIX_TIMESTAMP(created_at) DIV $div AS timekey
 
             FROM tb_booking_orders
             WHERE type = 's'

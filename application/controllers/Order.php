@@ -288,8 +288,8 @@ class Order extends CI_Controller {
 
     }
 
-    public function lastprice() {
-        $prices = $this->marketmodel->lastprice();
+    public function lastprice($timeseries = 1800) {
+        $prices = $this->marketmodel->lastprice($timeseries);
         return response($prices)->json();
     }
     
