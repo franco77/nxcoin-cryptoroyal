@@ -46,8 +46,10 @@ $(document).ready(function() {
                 
                 if( close > open  ) {
                     el.find("#tmp_cr_changes").parent().addClass('cr_price_up');
-                } else {
+                } else if(close < open) {
                     el.find("#tmp_cr_changes").parent().addClass('cr_price_down');
+                } else {
+                    //el.find("#tmp_cr_changes").parent().addClass('cr_price_down');
                 }
             }
             
