@@ -13,3 +13,4 @@ $route['translate_uri_dashes'] = FALSE;
 $route['wallet/balance/(:any)'] = 'wallet/balance/$1';
 
 $route['admin/order/history'] = 'adminarea/order/history/$1';
+$route['order/history'] = 'order/history/$1';

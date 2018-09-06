@@ -347,7 +347,7 @@ google.charts.setOnLoadCallback(drawChart);
     </div>
 </div>
 
-
+<!-- USER ORDER HISTORY -->
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
@@ -390,6 +390,39 @@ google.charts.setOnLoadCallback(drawChart);
         </div>
     </div>
 </div>
+<!--/ USER ORDER HISTORY -->
+
+<!-- MARKET ORDER HISTORY -->
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+        <div class="card">
+            <div class="card-header"><h5>Market Order History</h5></div>
+            <div class="card-body">
+                
+                <div class="table-responsive">
+                    <table id="tb_order_history" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Order Id</th>
+                                <th>Pair</th>
+                                <th>Price</th>
+                                <th>Amount</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- MARKET ORDER HISTORY -->
 
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
@@ -687,6 +720,19 @@ var nxccBalance = $(".nxccBalance").UserBalance({ type:'nxcc'}).get();
 
 
 var badge = $("#badge_prices").CrPrice({test:'test'}).get();
+
+var marketOrderHistory = $("#tb_order_history").DataTable({
+    "processing": true,
+    "serverSide": true,
+    "ajax": env.site_url+'order/history',
+    "columns": [
+        { "data": "order_id" },
+        { "data": "pair" },
+        { "data": "price" },
+        { "data": "amount" },
+        { "data": "created_at" }
+    ]
+});
 
 });
 
