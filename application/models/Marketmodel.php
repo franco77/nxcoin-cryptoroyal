@@ -403,7 +403,7 @@ class Marketmodel extends CI_Model {
             SELECT
                 MAX(price) as high_price, 
                 SUM(amount) as volume,
-                COUNT(order_id) as count_booking,
+                COUNT(booking_id) as count_booking,
                 MIN(price) as low_price, 
                 MAX(created_at) as created_at,
                 SUBSTRING_INDEX(GROUP_CONCAT(CAST(price AS CHAR)  ORDER BY created_at DESC SEPARATOR ','), ',', 1 ) as close_price,
