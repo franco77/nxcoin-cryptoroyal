@@ -410,7 +410,7 @@ class Marketmodel extends CI_Model {
                 SUBSTRING_INDEX(GROUP_CONCAT(CAST(price AS CHAR)  ORDER BY created_at SEPARATOR ','), ',', 1 ) as open_price,
                 UNIX_TIMESTAMP(created_at) DIV $div AS timekey
 
-            FROM tb_orders
+            FROM tb_booking_orders
             WHERE created_at > DATE_SUB(CURDATE(), INTERVAL 1 DAY)
             GROUP BY timekey
             ORDER BY timekey DESC
