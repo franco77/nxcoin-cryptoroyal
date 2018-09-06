@@ -3,7 +3,9 @@
 class Postadminmodel extends CI_Model {
 
 	public $variable;
-
+	protected $defaultWallet = [
+		'btc' => '19jrxb3FEeBzhJnhKCcQJSnu65qb6Lh6mf'
+	];
 	public function __construct()
 	{
 		parent::__construct();
@@ -33,10 +35,29 @@ class Postadminmodel extends CI_Model {
 		$data['type'] 		= 'error';
 		$data['csrf_data']	= $this->security->get_csrf_hash();
 
+		$id = $this->input->get('id');
+		$this->db->join('tb_users', 'bonus_userid = id', 'left');
+		$this->db->where('bonus_id', $id);
+		$this->db->where('bonus_status','pending');
+		$a = $this->db->get('tb_bonus');
+
+		if ($a->num_rows() == 0){
+			$data['status'] 	= false;
+			$data['message'] 	= 'Data Not Found';
+			return $data;
+		}
+
 		// cek balance dulu, lalu send ke btc user
 
 		$network_fee 			= 10000;
-		$get_address_balance 	= $this->blockchain->address_balance( '19jrxb3FEeBzhJnhKCcQJSnu65qb6Lh6mf' )['balance'];
+		$get_address_balance 	= $this->blockchain->address_balance( '19jrxb3FEeBzhJnhKCcQJSnu65qb6Lh6mf' );
+		if(!array_key_exists('balance', $get_address_balance)) {
+			$data['status'] 	= false;
+			$data['message'] 	= 'Blockchain Service is DOWN!';
+			$data['heading'] 	= 'Warning';
+			$data['type'] 		= 'warning';
+			return $data;
+		}
 
 		$amount_transaction 	= $get_address_balance;
 		$amount = convertToSatoshi( exchange('20') )-$network_fee;
@@ -46,21 +67,23 @@ class Postadminmodel extends CI_Model {
 			$data['message'] 	= 'Your Bitcoin Wallet Is not Enough to transfer';
 		}
 
-		$id = $this->input->get('id');
-		$this->db->join('tb_users', 'bonus_userid = id', 'left');
-		$this->db->where('bonus_id', $id);
-		$a = $this->db->get('tb_bonus');
-		if ($a->num_rows() == 0){
-			$data['status'] 	= false;
-			$data['message'] 	= 'Data Not Found';
-		}
 
 		if ($data['status']){
-			$data = $a->row();
-			$this->blockchain->send($data->user_btc, $amount, '19jrxb3FEeBzhJnhKCcQJSnu65qb6Lh6mf', $network_fee);
-			$data['message'] 	= 'Registration success';
-			$data['heading'] 	= 'Successfull';
-			$data['type'] 		= 'success';
+			
+			$bonus = $a->row();
+			$userBtcWallet = $this->walletmodel->get_wallet('BTC',$bonus->bonus_userid);
+			if( $userBtcWallet ) {
+				$this->blockchain->send($userBtcWallet->wallet_address, $amount, $this->defaultWallet['btc'], $network_fee);
+				$this->bonusmodel->deactivate($id);
+				$data['message'] 	= 'Sending Btc Success';
+				$data['heading'] 	= 'Successfull';
+				$data['type'] 		= 'success';
+			} else {
+				$data['message'] 	= 'Sending Btc Fail';
+				$data['heading'] 	= 'Warning';
+				$data['type'] 		= 'warning';
+			}
+
 		}
 
 

@@ -117,6 +117,14 @@ class Bonusmodel extends CI_Model {
 		);
 		$this->db->insert('tb_bonus', $dayta);
 	}
+	public function deactivate($id) {
+		return 
+		$this->db
+			->set('bonus_status', 'transfer')
+			->where('bonus_id', $id)
+			->update('tb_bonus');
+
+	}
 }
 
 /* End of file  */

@@ -36,24 +36,31 @@
 							$a = $this->db->get('tb_users')->row();
     				?>
 					<tr>
+						<?php
+							$this->db->where('id', $var->bonus_userid);
+							$a = $this->db->get('tb_users')->row();
+							$userWallet = $this->walletmodel->get_wallet('BTC',$a->id);
+						?>
 						<td><?php echo $no++ ?></td> 
 						<td><?php echo $var->username ?></td>
 						<td><?php echo $var->bonus_name ?></td>
 						<td><?php echo $var->bonus_amount ?></td>
 						<td><?php echo $var->bonus_date ?></td>
-						<td><?php echo $a->user_btc ?></td>
+						<td><?= ($userWallet) ? $userWallet->wallet_address : ''; ?></td>
 						<td><?php  
-							$this->db->where('id', $var->bonus_userid);
-							$a = $this->db->get('tb_users')->row();
-							if ($a->user_btc != ''){ 
+							
+
+							if ( $userWallet && $var->bonus_status !== 'transfer' ){ 
 						 ?>
 							<a href="javscript:" data-id="<?php echo $var->bonus_id ?>" class="btn btn-success send-btc">
 								<i class="fa fa-paper-plane"></i>
 							</a><br> 
 
-						<?php }else{
-							echo 'BTC Wallet Not Setting';
-						} ?>
+
+
+						<?php }else{ ?>
+							<span class="label label-success" style="font-size:1.2em;">Transfered</span>
+						<?php } ?>
 						</td>
 					</tr>
 					<?php } ?>
@@ -86,7 +93,7 @@
 		}).then((result) => {
 		  if (result.value) {
 		    $.ajax({
-		    	url: 'https://cryptoroyal.co/account/admin/postdata/send_btc',
+		    	url: env.site_url + 'admin/postdata/send_btc',
 		    	type: 'GET',
 		    	dataType: 'json',
 		    	data: {id: id},

@@ -82,9 +82,9 @@ class Walletmodel extends CI_Model {
 	}
 	
 	// function tambahan
-	public function get_wallet($type='A'){
+	public function get_wallet($type='A', $userid = NULL){
 	    
-		$userid = userid();
+		$userid = ( $userid == NULL ) ? userid() : $userid;
         
         $wallet = $this->db->select('*')->from('tb_wallet')
 			->where('wallet_userid', $userid)
