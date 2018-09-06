@@ -70,7 +70,7 @@
     					$num_rows = $this->db->get('tb_bonus')->num_rows(); 
 					?>
 					<tr>
-						<td colspan="6" class="text-right"><?php echo $this->paginationmodel->paginate( 'userbonus' , $num_rows, $limit_per_page ); ?></td>
+						<td colspan="6" class="text-right"><?php echo $this->paginationmodel->paginate( 'sendbonusbtc' , $num_rows, $limit_per_page ); ?></td>
 					</tr>
 				</tfoot>
 			</table>
