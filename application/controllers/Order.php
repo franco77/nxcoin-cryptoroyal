@@ -150,11 +150,13 @@ class Order extends CI_Controller {
         $minprice = $this->minprice['BTC'];
 
         if( $price < $minprice ) {
-            if( $price < $this->marketmodel->bestAsk() ) {
+            $bestAsk = $this->marketmodel->bestAsk();
 
+            if( $price < $bestAsk ) {
+                
             
                 return $this->output->set_output(json_encode([
-                    'message' => 'Minimum price is '.$minprice,
+                    'message' => 'Minimum price is '.$bestAsk,
                     'heading' => 'failed',
                     'type' => 'warning',
                     'status' => 0,
