@@ -437,7 +437,7 @@ class Marketmodel extends CI_Model {
             ->where('pairs',$pairs)
             ->where('type','S')
             ->where('status','A')
-            ->order_by('price','desc')
+            ->order_by('price','asc')
             ->limit(1)
             ->get()->row()->price;
     }
