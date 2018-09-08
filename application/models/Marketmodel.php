@@ -411,7 +411,7 @@ class Marketmodel extends CI_Model {
                 UNIX_TIMESTAMP(created_at) DIV $div AS timekey
 
             FROM tb_booking_orders
-            WHERE created_at > DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+            WHERE created_at > DATE_SUB(CURDATE(), INTERVAL 30 DAY)
             GROUP BY timekey
             ORDER BY timekey DESC
         ) as d
