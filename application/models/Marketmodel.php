@@ -435,6 +435,8 @@ class Marketmodel extends CI_Model {
             ->select('price')
             ->from('tb_booking_orders')
             ->where('pairs',$pairs)
+            ->where('type','S')
+            ->where('status','A')
             ->order_by('price','desc')
             ->limit(1)
             ->get()->row()->price;
