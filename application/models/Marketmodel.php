@@ -403,14 +403,14 @@ class Marketmodel extends CI_Model {
             SELECT
                 MAX(price) as high_price, 
                 SUM(amount) as volume,
-                COUNT(booking_id) as count_booking,
+                COUNT(order_id) as count_booking,
                 MIN(price) as low_price, 
                 MAX(created_at) as created_at,
                 SUBSTRING_INDEX(GROUP_CONCAT(CAST(price AS CHAR)  ORDER BY created_at DESC SEPARATOR ','), ',', 1 ) as close_price,
                 SUBSTRING_INDEX(GROUP_CONCAT(CAST(price AS CHAR)  ORDER BY created_at SEPARATOR ','), ',', 1 ) as open_price,
                 UNIX_TIMESTAMP(created_at) DIV $div AS timekey
 
-            FROM tb_booking_orders
+            FROM tb_orders
             WHERE created_at > DATE_SUB(CURDATE(), INTERVAL 30 DAY)
             GROUP BY timekey
             ORDER BY timekey DESC
