@@ -150,15 +150,19 @@ class Order extends CI_Controller {
         $minprice = $this->minprice['BTC'];
 
         if( $price < $minprice ) {
+            if( $price < $this->marketmodel->bestAsk() ) {
 
-            return $this->output->set_output(json_encode([
-                'message' => 'Minimum price is '.$minprice,
-                'heading' => 'failed',
-                'type' => 'warning',
-                'status' => 0,
-                'csrf_data' => $this->security->get_csrf_hash()
             
-            ]));
+                return $this->output->set_output(json_encode([
+                    'message' => 'Minimum price is '.$minprice,
+                    'heading' => 'failed',
+                    'type' => 'warning',
+                    'status' => 0,
+                    'csrf_data' => $this->security->get_csrf_hash()
+                
+                ]));
+
+            }
             
         }
 

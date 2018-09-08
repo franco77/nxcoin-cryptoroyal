@@ -429,7 +429,16 @@ class Marketmodel extends CI_Model {
 		//     ->where('created_at <', 'DATE_SUB(CURDATE(), INTERVAL 1 DAY)')
 		//     ->group_by('timekey')
 		//     ->get()->result();
-	}
+    }
+    public function bestAsk($pairs = 'nxcc-btc') {
+        return $this->db
+            ->select('price')
+            ->from('tb_booking_orders')
+            ->where('pairs',$pairs)
+            ->order_by('price','desc')
+            ->limit(1)
+            ->get()->row()->price;
+    }
 
 
 
