@@ -30,7 +30,8 @@ class Marketmodel extends CI_Model {
 
     public function hasBtcWallet() {
 		$wallet = $this->db->select('*')->from('tb_wallet')
-			->where('wallet_userid', userid())
+            ->where('wallet_userid', userid())
+            ->where('wallet_address is not NULL', NULL, FALSE)
 			->where('wallet_type','BTC')->get();
 		if( $wallet->num_rows() < 1 ) {
             return false;
@@ -43,7 +44,8 @@ class Marketmodel extends CI_Model {
         $userid = ($userid == null) ? userid() : $userid;
         
         $wallet = $this->db->select('wallet_address')->from('tb_wallet')
-			->where('wallet_userid', $userid)
+            ->where('wallet_userid', $userid)
+            ->where('wallet_address is not NULL', NULL, FALSE)
             ->where('wallet_type','BTC')->get();
             
 		if( $wallet->num_rows() < 1 ) {
