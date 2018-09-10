@@ -33,7 +33,7 @@ class Run extends CI_Controller {
 				$userdata = userdata(array('id' => $get_stc->stc_userid));
 				
 				$old = strtotime($userdata->next_profit);
-				$isNowDate = date('Y-m-d', $old);
+				echo '#'.$isNowDate = date('Y-m-d', $old);
 
 				die(var_dump($isNowDate >= $next_profit_date));
 				if ($userdata->next_profit >=  $next_profit_date){
