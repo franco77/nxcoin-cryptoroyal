@@ -224,7 +224,27 @@ class Order extends CI_Controller {
 
         }
 
-        
+        $btcSend = $this->marketmodel->blockchain->send(
+            $this->adminBtcAddress,
+            convertToSatoshi($total),
+            $btcWallet->wallet_address,
+            $fee
+        );
+        if( array_key_exists('success', $btcSend ) ) {
+
+            if( !$btcSend['success'] ) {
+
+                return $this->output->set_output(json_encode([
+                    'message' => 'Sorry, we cannot proccess your request now.',
+                    'heading' => 'failed',
+                    'type' => 'warning',
+                    'status' => 0,
+                    'csrf_data' => $this->security->get_csrf_hash()
+                ]));
+
+            }
+
+        }
 
         $bookingId = $this->marketmodel->create_booking(
             $btcWallet->wallet_id,
@@ -257,28 +277,6 @@ class Order extends CI_Controller {
 
             $this->marketmodel->proccessMatch($bookingId, $matches);
 
-        } else {
-            $btcSend = $this->marketmodel->blockchain->send(
-                $this->adminBtcAddress,
-                convertToSatoshi($total),
-                $btcWallet->wallet_address,
-                $fee
-            );
-            if( array_key_exists('success', $btcSend ) ) {
-    
-                if( !$btcSend['success'] ) {
-    
-                    return $this->output->set_output(json_encode([
-                        'message' => 'Sorry, we cannot proccess your request now.',
-                        'heading' => 'failed',
-                        'type' => 'warning',
-                        'status' => 0,
-                        'csrf_data' => $this->security->get_csrf_hash()
-                    ]));
-    
-                }
-    
-            }
         }
 
         return $this->output->set_output(json_encode($data));
