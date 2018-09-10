@@ -27,10 +27,11 @@ class Run extends CI_Controller {
 		$this->db->join('tb_package', 'package_id = stc_package', 'left');
 		$this->db->where('stc_date_end >= ', sekarang());
 		$ge = $this->db->get('tb_stacking');
-		die(json_encode($ge->result()));
+		//die(json_encode($ge->result()));
 		if ($ge->num_rows() > 0){ 
 			foreach ($ge->result() as $get_stc) { 
 				$userdata = userdata(array('id' => $get_stc->stc_userid));
+				die(var_dump($userdata->next_profit >= $next_profit_date));
 				if ($userdata->next_profit >=  $next_profit_date){
 					echo $bonus = $get_stc->stc_amount * ($get_stc->package_profit/100);
 					if ($get_stc->rollover == '0'){
