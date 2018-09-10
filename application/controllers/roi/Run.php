@@ -18,7 +18,7 @@ class Run extends CI_Controller {
 	 **/
 	public function bonus_profit_7days()
 	{
-		echo $next_profit_date 	=  date('Y-m-d', strtotime('+7 days', strtotime( sekarang() )));
+		echo $next_profit_date 	=  date('Y-m-d H:i:s', strtotime('+7 days', strtotime( sekarang() )));
 
 		
 		//cek db stacking
