@@ -7,6 +7,14 @@ class Wallet extends CI_Controller {
         'BTC' => null,
         'NXCC' => null
     ];
+    private $blockchainConfig = [
+        'guid'				=> '431a22e0-e708-40de-b7cd-fb67d8d4290c',
+        'main_password' 	=> 'Bismillah123',
+        'second_password'	=> '252525',
+        'api_code'			=> "0d39755a-7844-4f56-9c3d-83594417b912",
+        'base_url'			=> 'http://127.0.0.1/',
+        'port'				=> '3000',
+    ];
 
     public function __construct()
 	{
@@ -52,6 +60,25 @@ class Wallet extends CI_Controller {
     }
     private function nxcc() {
         return currency($this->walletmodel->cek_balance('A'),'2','');
+    }
+
+    public function listing() {
+
+        if( !$this->ion_auth->is_login() && !$this->ion_auth->is_admin() ) {
+
+            return response([
+                'status' => 0,
+                'message' => 'unAuthorized Access!'
+            ], 401)->json();
+
+        }
+        $blockchain = new Blockchain($this->blockchainConfig);
+        $addresses = $blockchain->list_addresses();
+
+        return response([
+            'status' => 1,
+            'data' => $addresses
+        ], 200)->json();
     }
 
 }
