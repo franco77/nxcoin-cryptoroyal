@@ -53,7 +53,7 @@ class Postadminmodel extends CI_Model {
 		$get_address_balance 	= $this->blockchain->address_balance( $this->defaultWallet['btc'] );
 		if(!array_key_exists('balance', $get_address_balance)) {
 			$data['status'] 	= false;
-			$data['message'] 	= 'Blockchain Service is DOWN!'.json_encode($get_address_balance);
+			$data['message'] 	= $get_address_balance['error'];
 			$data['heading'] 	= 'Warning';
 			$data['type'] 		= 'warning';
 			return $data;
