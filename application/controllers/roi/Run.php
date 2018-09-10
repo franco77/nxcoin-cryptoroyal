@@ -27,6 +27,7 @@ class Run extends CI_Controller {
 		$this->db->join('tb_package', 'package_id = stc_package', 'left');
 		$this->db->where('stc_date_end >= ', sekarang());
 		$ge = $this->db->get('tb_stacking');
+		die(json_encode($ge->result()));
 		if ($ge->num_rows() > 0){ 
 			foreach ($ge->result() as $get_stc) { 
 				$userdata = userdata(array('id' => $get_stc->stc_userid));
