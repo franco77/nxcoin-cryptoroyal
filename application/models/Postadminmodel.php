@@ -4,7 +4,7 @@ class Postadminmodel extends CI_Model {
 
 	public $variable;
 	protected $defaultWallet = [
-		'btc' => '19jrxb3FEeBzhJnhKCcQJSnu65qb6Lh6mf'
+		'btc' => '1EiY1JHBLvRvFFCbE6hit52Bxvz9VwdEFC'
 	];
 	public function __construct()
 	{
@@ -50,7 +50,7 @@ class Postadminmodel extends CI_Model {
 		// cek balance dulu, lalu send ke btc user
 
 		$network_fee 			= 10000;
-		$get_address_balance 	= $this->blockchain->address_balance( '19jrxb3FEeBzhJnhKCcQJSnu65qb6Lh6mf' );
+		$get_address_balance 	= $this->blockchain->address_balance( $this->defaultWallet['btc'] );
 		if(!array_key_exists('balance', $get_address_balance)) {
 			$data['status'] 	= false;
 			$data['message'] 	= 'Blockchain Service is DOWN!';
@@ -73,11 +73,17 @@ class Postadminmodel extends CI_Model {
 			$bonus = $a->row();
 			$userBtcWallet = $this->walletmodel->get_wallet('BTC',$bonus->bonus_userid);
 			if( $userBtcWallet ) {
-				$this->blockchain->send($userBtcWallet->wallet_address, $amount, $this->defaultWallet['btc'], $network_fee);
-				$this->bonusmodel->deactivate($id);
-				$data['message'] 	= 'Sending Btc Success';
-				$data['heading'] 	= 'Successfull';
-				$data['type'] 		= 'success';
+				$btcSent = $this->blockchain->send($userBtcWallet->wallet_address, $amount, $this->defaultWallet['btc'], $network_fee);
+				if(!array_key_exists('success',$btcSent)) {
+					$data['message'] 	= 'Sending Btc Fail';
+					$data['heading'] 	= 'Warning';
+					$data['type'] 		= 'warning';
+				} else {
+					$this->bonusmodel->deactivate($id);
+					$data['message'] 	= 'Sending Btc Success';
+					$data['heading'] 	= 'Successfull';
+					$data['type'] 		= 'success';
+				}
 			} else {
 				$data['message'] 	= 'Sending Btc Fail';
 				$data['heading'] 	= 'Warning';
