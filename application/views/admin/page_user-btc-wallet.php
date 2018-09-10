@@ -38,7 +38,7 @@ $(document).ready(function() {
         ]
     });
     $("#btn_refresh_wallet").on('click', function() {
-        btc_wallet_list.ajax.reload();
+        btc_wallet_list.ajax.reload().draw();
     })
 
     // $.ajax({
