@@ -74,10 +74,18 @@ class Wallet extends CI_Controller {
         }
         $blockchain = new Blockchain($this->blockchainConfig);
         $addresses = $blockchain->list_addresses();
+        if( !array_key_exists('addresses', $addresses) ) {
 
+            return response([
+                'status' => 0,
+                'data' => [],
+                'message' => $addresses['warning']
+            ],200)->json();
+
+        }
         return response([
             'status' => 1,
-            'data' => $addresses
+            'data' => $addresses['addresses']
         ], 200)->json();
     }
 
