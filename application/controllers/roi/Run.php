@@ -30,7 +30,7 @@ class Run extends CI_Controller {
 		if ($ge->num_rows() > 0){ 
 			foreach ($ge->result() as $get_stc) { 
 				$userdata = userdata(array('id' => $get_stc->stc_userid));
-				if ($userdata->next_profit ==  $next_profit_date){
+				if ($userdata->next_profit ==  date('Y-m-d')){
 					echo $bonus = $get_stc->stc_amount * ($get_stc->package_profit/100);
 					if ($get_stc->rollover == '0'){
 						$this->bonusmodel->insert_pasif_mode2($get_stc->stc_userid,$bonus);
