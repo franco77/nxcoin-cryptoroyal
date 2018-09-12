@@ -90,3 +90,4 @@
 [01-Sep-2018 08:55:27 UTC] PHP Fatal error:  Call to undefined method CI_DB_mysqli_result::where() in /home/cryptoroyal/public_html/account/application/models/Marketmodel.php on line 350
 [01-Sep-2018 08:56:41 UTC] PHP Fatal error:  Call to undefined method CI_DB_mysqli_driver::row() in /home/cryptoroyal/public_html/account/application/models/Marketmodel.php on line 352
 [01-Sep-2018 08:56:57 UTC] PHP Fatal error:  Call to undefined method CI_DB_mysqli_driver::result() in /home/cryptoroyal/public_html/account/application/models/Marketmodel.php on line 352
+[12-Sep-2018 04:56:13 UTC] PHP Parse error:  syntax error, unexpected '===' (T_IS_IDENTICAL), expecting function (T_FUNCTION) in /home/cryptoroyal/public_html/account/application/controllers/roi/Run.php on line 65
