@@ -331,7 +331,7 @@ class Marketmodel extends CI_Model {
             $this->adminBtcAddress,
             $fee
         );
-
+        var_dump($sent);
     }
 
     public function create_order( $buyId, $sellId, $price, $amount, $pairs = 'nxcc-btc') {
