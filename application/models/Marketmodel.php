@@ -222,9 +222,9 @@ class Marketmodel extends CI_Model {
             $sellId = ($match->type == 'S') ? $match->booking_id : $booking->booking_id;
             $buyId = ($match->type == 'B') ? $match->booking_id : $booking->booking_id;
 
-            $totalBtc = ($match->price * $matchAmount);
-            $fee = ($totalBtc * 1.4) / 100;
-            $totalSendBtc = $totalBtc - $fee;
+            $totalBtc =  bcmul( (string) $match->price, (string) $matchAmount, 8);
+            $fee = bcdiv( bcmul($totalBtc, "1.4", 8), "100", 8);
+            $totalSendBtc = bcsub( (string) $totalBtc, (string) $fee, 8);
 
             $this->incrNxccBalance($buyerId, $matchAmount);
             $this->incrBtcBalance($sellerId, $totalSendBtc, $fee);
@@ -329,10 +329,8 @@ class Marketmodel extends CI_Model {
             $btcWallet->wallet_address,
             convertToSatoshi($amount),
             $this->adminBtcAddress,
-            $fee
+            convertToSatoshi($fee)
         );
-        var_dump($fee);
-        var_dump($sent);
     }
 
     public function create_order( $buyId, $sellId, $price, $amount, $pairs = 'nxcc-btc') {
