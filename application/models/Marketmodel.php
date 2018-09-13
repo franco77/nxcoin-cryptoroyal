@@ -119,13 +119,13 @@ class Marketmodel extends CI_Model {
         $insWallet = [
             [
                 'wallet_userid' => $from_wallet->wallet_userid,
-                'wallet_type' => 'A',
+                'wallet_type' => $from_wallet->wallet_type,
                 'wallet_amount' => '-'.$amount,
                 'wallet_desc' => 'BOOKING ORDER',
             ],
             [
                 'wallet_userid' => $to_wallet->wallet_userid,
-                'wallet_type' => 'A',
+                'wallet_type' => $to_wallet->wallet_type,
                 'wallet_amount' => $amount,
                 'wallet_desc' => 'BOOKING ORDER',
             ]
