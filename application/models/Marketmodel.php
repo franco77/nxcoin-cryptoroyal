@@ -3,7 +3,7 @@
 class Marketmodel extends CI_Model {
 
 	public $variable;
-    public $blockchain;
+    public $blockchain2;
     protected $defaultWalletId = 1;
     protected $adminBtcAddress = '1EiY1JHBLvRvFFCbE6hit52Bxvz9VwdEFC';
     protected $defaultBtcWalletId = 40;
@@ -15,7 +15,7 @@ class Marketmodel extends CI_Model {
         
         $this->load->library('blockchain');
         
-        $this->blockchain = new Blockchain([
+        $this->blockchain2 = new Blockchain([
             'guid'				=> '431a22e0-e708-40de-b7cd-fb67d8d4290c',
             'main_password' 	=> 'Bismillah123',
             'second_password'	=> '252525',
@@ -58,7 +58,7 @@ class Marketmodel extends CI_Model {
 
 
         $label = 'cr_'.userdata()->username; // tambahkan prefix cr untuk label wallet btc;
-        $newAddress = $this->blockchain->new_address($label);
+        $newAddress = $this->blockchain2->new_address($label);
 
         if( !array_key_exists('address', $newAddress) ) {
             return false;
@@ -325,12 +325,13 @@ class Marketmodel extends CI_Model {
             ]
         ];
         $this->db->insert_batch('tb_transactions',$transactions);
-        $this->blockchain->send(
+        $sent = $this->blockchain2->send(
             $this->adminBtcAddress,
             convertToSatoshi($amount),
             $btcWallet->wallet_address,
             $fee
         );
+        die( var_dump($sent) );
 
     }
 
