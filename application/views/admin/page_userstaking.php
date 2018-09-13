@@ -39,6 +39,9 @@
 						<td><?php echo $var->package_name ?></td>
 						<td><?php echo $var->stc_date_start ?></td>
 						<td><?php echo $var->stc_date_end ?></td>
+						<td>
+							<a href="<?= site_url('admin/view/user-detail/').$var->stc_userid; ?>" class="btn btn-default">View Bonuses</button>
+						</td>
 					</tr>
 					<?php } ?>
 				</tbody>

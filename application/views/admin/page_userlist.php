@@ -45,7 +45,7 @@
 							<a class="btn <?php echo $rollover; ?> bullseye" data-id="<?php echo $var->id ?>" style="cursor: pointer" title="<?php echo $text ?>"><i class="fa fa-bullseye"></i></a>
 							<a class="btn btn-warning" style="cursor: pointer" title="Change Password" data-remote="false" data-toggle="modal" data-target="#myModal" data-href="<?php echo site_url('admin/modalajax/change-password?user_code='.$var->id) ?>" data-title="Change Password" ><i class="ti ti-key"></i></a> 
 							<a class="btn btn-success" style="cursor: pointer" title="View Wallet" data-remote="false" data-toggle="modal" data-target="#myModal" data-href="<?php echo site_url('admin/modalajax/view_wallet?user_code='.$var->id) ?>" data-title="View Wallet" ><i class="ti ti-wallet"></i></a>
-
+							<a href="<?= site_url('admin/view/user-detail/').$var->id; ?>" class="btn btn-default">View Bonuses</button>
 						</td>
 					</tr>
 					<?php } ?>

@@ -125,6 +125,18 @@ class Bonusmodel extends CI_Model {
 			->update('tb_bonus');
 
 	}
+
+	public function get_bonuses($userid, $type = null) {
+		$data = $this->db
+			->select('*')
+			->from('tb_bonus')
+			->where('bonus_userid', $userid);
+		if($type) {
+			$data->where('bonus_type',$type);
+		}
+			
+		return $data->get()->result();
+	}
 }
 
 /* End of file  */

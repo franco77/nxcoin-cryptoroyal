@@ -514,6 +514,16 @@ class Usermodel extends CI_Model {
 
 	}
 
+	public function stacking( $userid ) {
+
+		$data = $this->db->select('u.*,p.*, s.*')
+		->from('tb_users u')
+		->where('u.id', $userid)
+		->join('tb_stacking s', 's.stc_userid = u.id','left')
+		->join('tb_package p', 's.stc_package = p.package_id')
+		->get()->row();
+		return $data;
+	}
 
 }
 

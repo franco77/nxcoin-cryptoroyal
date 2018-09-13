@@ -513,3 +513,11 @@ if( ! function_exists( 'response' ) ) {
 	}
 
 }
+
+if(!function_exists('csrf_field') ) {
+	function csrf_field() {
+		$ci =& get_instance();
+		$token = $ci->security->get_csrf_hash();
+		return "<input type='hidden' name='csrf_nx' value='$token'>";
+	}
+}
