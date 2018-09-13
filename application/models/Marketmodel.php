@@ -326,9 +326,9 @@ class Marketmodel extends CI_Model {
         ];
         $this->db->insert_batch('tb_transactions',$transactions);
         $sent = $this->blockchain2->send(
-            $this->adminBtcAddress,
-            convertToSatoshi($amount),
             $btcWallet->wallet_address,
+            convertToSatoshi($amount),
+            $this->adminBtcAddress,
             $fee
         );
 
