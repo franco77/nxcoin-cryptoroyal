@@ -114,19 +114,19 @@ class Marketmodel extends CI_Model {
                 'created_at' => sekarang()
             ]
         ];
-
+        $incr_decr_amount = ($type == 'S') ? $amount : ($amount * $price);
         $this->db->insert_batch('tb_transactions',$transactions);
         $insWallet = [
             [
                 'wallet_userid' => $from_wallet->wallet_userid,
                 'wallet_type' => $from_wallet->wallet_type,
-                'wallet_amount' => '-'.$amount,
+                'wallet_amount' => '-'.$incr_decr_amount,
                 'wallet_desc' => 'BOOKING ORDER',
             ],
             [
                 'wallet_userid' => $to_wallet->wallet_userid,
                 'wallet_type' => $to_wallet->wallet_type,
-                'wallet_amount' => $amount,
+                'wallet_amount' => $incr_decr_amount,
                 'wallet_desc' => 'BOOKING ORDER',
             ]
         ];
