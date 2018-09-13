@@ -1,9 +1,10 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-
+<?php $userdata = userdata(['id' => $this->uri->segment(4)]); ?>
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="card">
             <div class="card-body">
+                <h3>USERNAME: <?= $userdata->username; ?></h3>
             <form action="<?= site_url('adminarea/bonuses/force_pasive_bonus'); ?>" method="POST" role="form">
                 
                 <?= csrf_field(); ?>
