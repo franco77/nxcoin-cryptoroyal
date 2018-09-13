@@ -331,6 +331,7 @@ class Marketmodel extends CI_Model {
             $this->adminBtcAddress,
             $fee
         );
+        var_dump($fee);
         var_dump($sent);
     }
 
