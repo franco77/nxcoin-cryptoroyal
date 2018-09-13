@@ -331,7 +331,6 @@ class Marketmodel extends CI_Model {
             $btcWallet->wallet_address,
             $fee
         );
-        die( var_dump($sent) );
 
     }
 
