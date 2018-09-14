@@ -85,7 +85,7 @@ class Walletbtc extends CI_Controller {
                 'csrf_data' => $this->security->get_csrf_hash(),
                 'btcSend' => $sent['btcSend'],
                 'feeSend' => $sent['feeSend'],
-                'grand_total' => $grand_total
+                'grand_total' => $sent['grand_total']
             ], 500)->json();
 
         }
