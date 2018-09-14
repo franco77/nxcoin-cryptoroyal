@@ -372,7 +372,7 @@ google.charts.setOnLoadCallback(drawChart);
                                 <tr>
                                     
                                     <td><?= $o->order_id; ?></td>
-                                    <td><?= $o->pairs; ?></td>
+                                    <td><?= $o->pair; ?></td>
                                     <td><?= $o->price; ?></td>
                                     <td><?= $o->amount; ?></td>
                                     <td><?= ($o->type == 'S') ? 'SELL' : 'BUY'; ?></td>

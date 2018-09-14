@@ -63,23 +63,14 @@ class Ordermodel extends CI_Model {
     public function user_order_history($userid = NULL) {
         $userid = ($userid == NULL) ? userid() : $userid;
 
-        $data = $this->db
-            ->select('
-                o.*,
-                u1.id as seller_id,
-                u2.id as buyer_id,
-                u1.username as seller_username,
-                u2.username as buyer_username
-            ')
-            ->from( $this->table .' as o')
-            ->join('tb_booking_orders b1','o.sell_id = b1.booking_id')
-            ->join('tb_booking_orders b2', 'o.buy_id = b2.booking_id')
-            ->join('tb_users u1','b1.user_id = u1.id')
-            ->join('tb_users u2','b2.user_id = u2.id')
-            ->where('b1.user_id', $userid)
-            ->or_where('b2.user_id', $userid)
-            ->get()->result();
-        //return $data;
+        $data = 
+
+        $this->db->select('o.*,b.type')->from('tb_booking_orders b, tb_orders o')
+        ->where('b.user_id', $userid)
+        ->where('b.booking_id = o.buy_id', NULL, FALSE)
+        ->or_where('b.booking_id = o.sell_id', NULL, FALSE)
+        ->get()->result();
+        return $data;
 
     }
 
