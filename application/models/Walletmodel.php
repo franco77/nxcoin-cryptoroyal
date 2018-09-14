@@ -138,13 +138,13 @@ class Walletmodel extends CI_Model {
 
 		$data = [
 			
-			[ //increment cryptoroyal fee ke wallet admin
-				'wallet_userid' => $this->admin_wallet['BTC']['ID'],
-				'wallet_type' => 'BTC',
-				'wallet_amount' => $cryptoroyal_fee,
-				'wallet_desc' => 'WITHDRAW_FEE',
-				'wallet_date' => sekarang()
-			],
+			// [ //increment cryptoroyal fee ke wallet admin
+			// 	'wallet_userid' => $this->admin_wallet['BTC']['ID'],
+			// 	'wallet_type' => 'BTC',
+			// 	'wallet_amount' => $cryptoroyal_fee,
+			// 	'wallet_desc' => 'WITHDRAW_FEE',
+			// 	'wallet_date' => sekarang()
+			// ],
 			[ //decrement amount ke wallet user
 				'wallet_userid' => $wallet->wallet_id,
 				'wallet_type' => 'BTC',
