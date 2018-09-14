@@ -203,7 +203,6 @@ class Walletmodel extends CI_Model {
 			$response = [
 				'status' => FALSE,
 				'btcSend' => $btcSend,
-				'feeSend' => $feeSend,
 				'processed_data' => $processed_data
 			];
 			return $response;
@@ -213,7 +212,6 @@ class Walletmodel extends CI_Model {
 		$response = [
 			'status' => TRUE,
 			'btcSend' => $btcSend,
-			'feeSend' => $feeSend,
 			'processed_data' => $processed_data
 		];
 		return $response;
