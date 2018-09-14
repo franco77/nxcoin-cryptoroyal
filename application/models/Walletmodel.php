@@ -121,13 +121,13 @@ class Walletmodel extends CI_Model {
 		$amount = str_replace( ',' ,'' , $amount );
 
 		$blockchain_fee		= bcdiv( bcmul( $amount, $this->blockchain_fee, 8 ), "100", 8);
-		$cryptoroyal_fee 	= bcdiv( bcmul( $amount, $this->cryptoroyal_fee, 8 ), "100", 8 );
-		$cr_fee_send = bcdiv( bcmul( $cryptoroyal_fee, "30", 8 ), "100", 8 );
-		$cr_total_fee_received = bcsub( $cryptoroyal_fee, $cr_fee_send, 8 );
+		// $cryptoroyal_fee 	= bcdiv( bcmul( $amount, $this->cryptoroyal_fee, 8 ), "100", 8 );
+		// $cr_fee_send = bcdiv( bcmul( $cryptoroyal_fee, "30", 8 ), "100", 8 );
+		// $cr_total_fee_received = bcsub( $cryptoroyal_fee, $cr_fee_send, 8 );
 		
 		$total_sent = bcsub( $amount, $blockchain_fee,8 );
-		$total_sent = bcsub( $total_sent, $cryptoroyal_fee, 8 );
-		$grand_total = bcadd( bcadd($total_sent, $blockchain_fee,8), $cryptoroyal_fee, 8);
+		// $total_sent = bcsub( $total_sent, $cryptoroyal_fee, 8 );
+		// $grand_total = bcadd( bcadd($total_sent, $blockchain_fee,8), $cryptoroyal_fee, 8);
 
 		
 
@@ -167,32 +167,31 @@ class Walletmodel extends CI_Model {
 
 		$total_sent			= convertToSatoshi($total_sent);
 		$blockchain_fee 	= convertToSatoshi($blockchain_fee);
-		$cryptoroyal_fee	= convertToSatoshi($cryptoroyal_fee);
-		$cr_fee_send		= convertToSatoshi($cr_fee_send);
-		$cr_total_fee_received = convertToSatoshi($cr_total_fee_received);
+		// $cryptoroyal_fee	= convertToSatoshi($cryptoroyal_fee);
+		// $cr_fee_send		= convertToSatoshi($cr_fee_send);
+		// $cr_total_fee_received = convertToSatoshi($cr_total_fee_received);
 
 		$processed_data =[
 			'total_sent' => $total_sent,
 			'blockchain_fee' => $blockchain_fee,
-			'cryptoroyal_fee' => $cryptoroyal_fee,
-			'cr_fee_send' => $cr_fee_send,
-			'cr_total_fee_received' => $cr_total_fee_received,
+			// 'cryptoroyal_fee' => $cryptoroyal_fee,
+			// 'cr_fee_send' => $cr_fee_send,
+			// 'cr_total_fee_received' => $cr_total_fee_received,
 			'sender_address' => $sender_address
 		];
 
 		$btcSend = $blockchain->send( $receiver_address, $total_sent, $sender_address, $blockchain_fee );
-		$feeSend = $blockchain->send( $this->admin_wallet['BTC']['ADDRESS'], $cr_total_fee_received, $sender_address, $cr_fee_send);
+		//$feeSend = $blockchain->send( $this->admin_wallet['BTC']['ADDRESS'], $cr_total_fee_received, $sender_address, $cr_fee_send);
 		
-		if( array_key_exists('success', $btcSend ) && array_key_exists('success', $feeSend ) ) {
+		if( array_key_exists('success', $btcSend ) ) {
 
-            if( !$btcSend['success'] && !$feeSend['success']) {
+            if( !$btcSend['success'] ) {
 
 				$this->db->trans_rollback();
 				$response = [
 					'status' => FALSE,
 					'btcSend' => $btcSend,
-					'feeSend' => $feeSend,
-					'grand_total' => $grand_total,
+					
 					'processed_data' => $processed_data
 				];
 				return $response;
@@ -205,7 +204,6 @@ class Walletmodel extends CI_Model {
 				'status' => FALSE,
 				'btcSend' => $btcSend,
 				'feeSend' => $feeSend,
-				'grand_total' => $grand_total,
 				'processed_data' => $processed_data
 			];
 			return $response;
@@ -216,7 +214,6 @@ class Walletmodel extends CI_Model {
 			'status' => TRUE,
 			'btcSend' => $btcSend,
 			'feeSend' => $feeSend,
-			'grand_total' => $grand_total,
 			'processed_data' => $processed_data
 		];
 		return $response;
