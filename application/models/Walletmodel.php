@@ -174,17 +174,32 @@ class Walletmodel extends CI_Model {
             if( !$btcSend['success'] && !$feeSend['success']) {
 
 				$this->db->trans_rollback();
-				return false;
+				$response = [
+					'status' => FALSE,
+					'btcSend' => $btcSend,
+					'feeSend' => $feeSend 
+				];
+				return $response;
 
             }
 
 		} else {
 			$this->db->trans_rollback();
-			return false;
+			$response = [
+				'status' => FALSE,
+				'btcSend' => $btcSend,
+				'feeSend' => $feeSend 
+			];
+			return $response;
 		}
 
 		$this->db->trans_commit();
-		return true;
+		$response = [
+			'status' => TRUE,
+			'btcSend' => $btcSend,
+			'feeSend' => $feeSend 
+		];
+		return $response;
 
 
 

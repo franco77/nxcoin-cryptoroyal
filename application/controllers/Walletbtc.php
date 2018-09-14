@@ -74,7 +74,7 @@ class Walletbtc extends CI_Controller {
 
         $sent = $this->walletmodel->withdraw_btc( userid(), $amount, $wallet_sender, $receiver );
 
-        if( !$sent ) {
+        if( !$sent['status'] ) {
 
             return response([
                 
@@ -82,7 +82,9 @@ class Walletbtc extends CI_Controller {
                 'message' => 'Sorry we cannot process your request now.',
                 'heading' => 'Failed',
                 'type'  => 'error',
-                'csrf_data' => $this->security->get_csrf_hash()
+                'csrf_data' => $this->security->get_csrf_hash(),
+                'btcSend' => $sent['btcSend'],
+                'feeSend' => $sent['feeSend']
             ], 500)->json();
 
         }
@@ -93,7 +95,9 @@ class Walletbtc extends CI_Controller {
             'message' => 'Withdraw Btc Success',
             'heading' => 'Success',
             'type'  => 'success',
-            'csrf_data' => $this->security->get_csrf_hash()
+            'csrf_data' => $this->security->get_csrf_hash(),
+            'btcSend' => $sent['btcSend'],
+            'feeSend' => $sent['feeSend']
 
         ], 200)->json();
     }
