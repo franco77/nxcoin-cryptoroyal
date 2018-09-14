@@ -79,6 +79,7 @@ class Ordermodel extends CI_Model {
             ->where('b1.user_id', $userid)
             ->or_where('b2.user_id', $userid)
             ->get()->result();
+        return $data;
 
     }
 
