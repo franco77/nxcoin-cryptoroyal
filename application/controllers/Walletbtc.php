@@ -54,6 +54,18 @@ class Walletbtc extends CI_Controller {
 
         }
 
+        $btcBalance = $this->marketmodel->blockchain->address_balance($wallet_sender->wallet_address);
+        if(!array_key_exists('balance', $btcBalance)) {
+
+            
+            $message = 'Sorry, we cannot proccess your request now.';
+            $success = FALSE;
+
+        } else if( $btcBalance['balance'] < $amount ) {
+            $message = 'Your BTC Balance is insuficient';
+            $success = FALSE;
+        }
+
         
 
 
