@@ -84,7 +84,8 @@ class Walletbtc extends CI_Controller {
                 'type'  => 'error',
                 'csrf_data' => $this->security->get_csrf_hash(),
                 'btcSend' => $sent['btcSend'],
-                'feeSend' => $sent['feeSend']
+                'feeSend' => $sent['feeSend'],
+                'grand_total' => $grand_total
             ], 500)->json();
 
         }
@@ -97,7 +98,8 @@ class Walletbtc extends CI_Controller {
             'type'  => 'success',
             'csrf_data' => $this->security->get_csrf_hash(),
             'btcSend' => $sent['btcSend'],
-            'feeSend' => $sent['feeSend']
+            'feeSend' => $sent['feeSend'],
+            'grand_total' => $grand_total
 
         ], 200)->json();
     }

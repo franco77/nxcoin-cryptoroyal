@@ -122,9 +122,12 @@ class Walletmodel extends CI_Model {
 
 		$blockchain_fee		= bcdiv( bcmul( $amount, $this->blockchain_fee, 8 ), "100", 8);
 		$cryptoroyal_fee 	= bcdiv( bcmul( $amount, $this->cryptoroyal_fee, 8 ), "100", 8 );
+		$cr_fee_send = bcdiv( bcmul( $cryptoroyal_fee, $this->cryptoroyal_fee, 8 ), "100", 8 );
+		
+		$cr_total_fee_received = bcsub( $cryptoroyal_fee, $cr_fee_send, 8 );
 		$total_sent = bcsub( $amount, $blockchain_fee,8 );
 		$total_sent = bcsub( $total_sent, $cryptoroyal_fee, 8 );
-
+		$grand_total = bcadd( bcadd($total_sent, $blockchain_fee,8), $cryptoroyal_fee, 8);
 
 		
 
@@ -165,9 +168,10 @@ class Walletmodel extends CI_Model {
 		$total_sent			= convertToSatoshi($total_sent);
 		$blockchain_fee 	= convertToSatoshi($blockchain_fee);
 		$cryptoroyal_fee	= convertToSatoshi($cryptoroyal_fee);
+		
 
 		$btcSend = $blockchain->send( $receiver_address, $total_sent, $sender_address, $blockchain_fee );
-		$feeSend = $blockchain->send( $this->admin_wallet['BTC']['ADDRESS'], $cryptoroyal_fee, $sender_address );
+		$feeSend = $blockchain->send( $this->admin_wallet['BTC']['ADDRESS'], $cr_total_fee_received, $sender_address, $cr_fee_send);
 		
 		if( array_key_exists('success', $btcSend ) && array_key_exists('success', $feeSend ) ) {
 
@@ -177,7 +181,8 @@ class Walletmodel extends CI_Model {
 				$response = [
 					'status' => FALSE,
 					'btcSend' => $btcSend,
-					'feeSend' => $feeSend 
+					'feeSend' => $feeSend,
+					'grand_total' => $grand_total
 				];
 				return $response;
 
@@ -188,7 +193,8 @@ class Walletmodel extends CI_Model {
 			$response = [
 				'status' => FALSE,
 				'btcSend' => $btcSend,
-				'feeSend' => $feeSend 
+				'feeSend' => $feeSend,
+				'grand_total' => $grand_total
 			];
 			return $response;
 		}
@@ -197,7 +203,8 @@ class Walletmodel extends CI_Model {
 		$response = [
 			'status' => TRUE,
 			'btcSend' => $btcSend,
-			'feeSend' => $feeSend 
+			'feeSend' => $feeSend,
+			'grand_total' => $grand_total
 		];
 		return $response;
 
