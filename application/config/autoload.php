@@ -158,5 +158,6 @@ $autoload['model'] = array(
 	'mainmodel',
 	'usermodel',
 	'mailermodel',
-	'marketmodel'
+	'marketmodel',
+	'ordermodel'
 );

@@ -23,7 +23,7 @@
     //end fungsi
     
     $pendings = $this->marketmodel->pending_orders();
-    $orders = NULL;
+    $orders = $this->ordermodel->user_order_history();
     $markets_sell = $this->marketmodel->pending_orders(FALSE,'S');
     $markets_buy = $this->marketmodel->pending_orders(FALSE,'B');
 
