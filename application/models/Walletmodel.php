@@ -122,7 +122,7 @@ class Walletmodel extends CI_Model {
 
 		$blockchain_fee		= bcdiv( bcmul( $amount, $this->blockchain_fee, 8 ), "100", 8);
 		$cryptoroyal_fee 	= bcdiv( bcmul( $amount, $this->cryptoroyal_fee, 8 ), "100", 8 );
-		$cr_fee_send = bcdiv( bcmul( $cryptoroyal_fee, $this->cryptoroyal_fee, 8 ), "100", 8 );
+		$cr_fee_send = bcdiv( bcmul( $cryptoroyal_fee, "30", 8 ), "100", 8 );
 		$cr_total_fee_received = bcsub( $cryptoroyal_fee, $cr_fee_send, 8 );
 		
 		$total_sent = bcsub( $amount, $blockchain_fee,8 );
@@ -176,7 +176,8 @@ class Walletmodel extends CI_Model {
 			'blockchain_fee' => $blockchain_fee,
 			'cryptoroyal_fee' => $cryptoroyal_fee,
 			'cr_fee_send' => $cr_fee_send,
-			'cr_total_fee_received' => $cr_total_fee_received
+			'cr_total_fee_received' => $cr_total_fee_received,
+			'sender_address' => $sender_address
 		];
 
 		$btcSend = $blockchain->send( $receiver_address, $total_sent, $sender_address, $blockchain_fee );
