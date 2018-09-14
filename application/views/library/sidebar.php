@@ -17,6 +17,7 @@
 
         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?php echo base_url('market') ?>" aria-expanded="false"><i class="mdi mdi-chart-areaspline"></i><span class="hide-menu">Internal Market</span></a></li>
         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?php echo base_url('stacking') ?>" aria-expanded="false"><i class="mdi mdi-chart-areaspline"></i><span class="hide-menu">Staking</span></a></li>
+        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?php echo base_url('withdraw-btc') ?>" aria-expanded="false"><i class="mdi mdi-credit-card-multiple"></i><span class="hide-menu">Withdraw BTC</span></a></li> 
  
 
         <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu">Bonus </span></a>
