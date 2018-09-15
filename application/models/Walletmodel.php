@@ -220,6 +220,16 @@ class Walletmodel extends CI_Model {
 
 	}
 
+	public function history_wd_btc( $userid = NULL ) {
+		$userid = ($userid) ? $userid : userid();
+
+		$data = $this->db->select('*')->from('tb_wallet')->where('wallet_userid', $userid)
+		->like('wallet_desc', 'WITHDRAW_TO : ')
+		->get()->result();
+
+		return $data;
+	}
+
 }
 
 /* End of file  */

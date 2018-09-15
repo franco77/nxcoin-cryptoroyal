@@ -1,6 +1,11 @@
+<?php
 
+    $wd_history = $this->walletmodel->history_wd_btc();
+
+?>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 <div class="row">
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
         <div class="card">
             <div class="card-body">
                 
@@ -25,15 +30,52 @@
             </div>
         </div>
     </div>
+    
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                
+                <div class="table-responsive">
+                    <table class="table table-hover" id="history_wd_btc">
+                        <thead>
+                            <tr>
+                                <th>Amount</th>
+                                <th>To</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        <?php if(!empty($wd_history)) { ?>
+                            <?php foreach($wd_history as $wd) { ?>
+                                <tr>
+                                    <td><?= $wd->wallet_amount ?></td>
+                                    <td><?= str_replace('WITHDRAW_TO : ','',$wd->wallet_desc); ?></td>
+                                    <td><?= $wd->wallet_date; ?></td>
+                                </tr>
+                            <?php } ?>
+
+                        <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
 </div>
 
-
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script>
 
 $(document).ready(function() {
 
     $("#badge").show();
     $('#breadcrumb').hide();
+
+    var history_wd_btc = $("#history_wd_btc").DataTable();
+
     $("#btn_wd").on('click', function() {
         $('body').loading();
         var data = {
