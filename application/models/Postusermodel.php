@@ -199,6 +199,7 @@ class Postusermodel extends CI_Model {
 			$data['type'] 		= 'success';
 			$data['status'] 	= true;  
 			$data['message'] 	= 'Success Buy One Ticket';
+			$data['data'] = $ticket_price;
 		}
 		$this->mainmodel->Always_Load();
 		////////////////////////////////////////////////////////////////////////////////////////////
