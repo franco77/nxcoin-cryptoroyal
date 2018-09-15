@@ -32,7 +32,8 @@
 
 $(document).ready(function() {
 
-
+    $("#badge").show();
+    $('#breadcrumb').hide();
     $("#btn_wd").on('click', function() {
         $('body').loading();
         var data = {

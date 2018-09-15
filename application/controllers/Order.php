@@ -3,7 +3,7 @@
 class Order extends CI_Controller {
  	
     protected $defaultWalletId = 1;
-    protected $defaultWalletBtcId = 40;
+    protected $defaultWalletBtcId = 47;
     protected $adminBtcAddress = '1EiY1JHBLvRvFFCbE6hit52Bxvz9VwdEFC';
     protected $minprice = [
         'BTC' => 0,
@@ -33,6 +33,16 @@ class Order extends CI_Controller {
         }
         //redirect($_SERVER['HTTP_REFERER']);
 
+        if( $booking->type == 'B' && $booking->status == 'A') {
+            $price = $booking->price;
+            $amount = $booking->amount;
+
+            $total = bcmul($price, $amount, 8);
+            $fee = bcdiv( bcmul($total, "1.4", 8), 100, 8);
+            $totalSend = bcsub($total, $fee, 8);
+            $blockchain = $this->marketmodel->blockchain2;
+            $wallet = $this->walletmodel->get_wallet('BTC', $booking->user_id);
+        }
         $data = [
             'message' => 'Your order has been canceled.',
             'heading' => 'Success',
