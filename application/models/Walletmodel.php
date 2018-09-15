@@ -146,7 +146,7 @@ class Walletmodel extends CI_Model {
 			// 	'wallet_date' => sekarang()
 			// ],
 			[ //decrement amount ke wallet user
-				'wallet_userid' => $wallet->wallet_id,
+				'wallet_userid' => $wallet->wallet_userid,
 				'wallet_type' => 'BTC',
 				'wallet_amount' => '-'.$amount,
 				'wallet_desc' => 'WITHDRAW_TO : '. $receiver_address,
