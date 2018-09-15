@@ -78,7 +78,7 @@
                                 <img src="https://cdn4.iconfinder.com/data/icons/proglyphs-shopping-and-finance/512/Coin_-_Dollar-512.png" style="width: 55px; filter: brightness(0) invert(1);">
                             </div>
                             <div style="margin-left: 10px">
-                                <h3 class="text-white mb-0"><?= $this->marketmodel->get_latest_price('USD'); ?></h3>
+                                <h3 class="text-white mb-0"><?= number_format( $this->marketmodel->get_latest_price('USD'),2,'.',','); ?></h3>
                                 <span class="text-white op-5">NXCC/USD</span>
                             </div>
                         </div>
