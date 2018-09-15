@@ -141,7 +141,7 @@ class Postusermodel extends CI_Model {
 			$data['status'] 	= false; 
 			$data['message'] 	= 'Error 500';
 		}
-		if ($walleta < $ticket_price){
+		if ( bcsub((string)$walleta, $ticket_price, 8) < 0 ){
 			$data['status'] 	= false; 
 			$data['message'] 	= 'Your Balance is Insuficient';
 		}
@@ -182,12 +182,12 @@ class Postusermodel extends CI_Model {
 				$object = array(
 					'rollover_userid'	=> $userdata->id,
 					'rollover_class' 	=> $data['kelas'],
-					'rollover_amount' 	=> '11',
+					'rollover_amount' 	=> $ticket_price,
 					'rollover_txid'		=> generateTxid(),
 					'rollover_date'		=> date('Y-m-d H:i:s')
 				);
 				$this->db->insert('tb_rollover', $object);
-				$this->walletmodel->pengurangan('A', '11');
+				$this->walletmodel->pengurangan('A', $ticket_price);
 				if ($data['kelas'] != '0'){
 					if ($this->mainmodel->updateUrutan('3','1') == true){
 						$this->mainmodel->updateUrutan('5','2');
