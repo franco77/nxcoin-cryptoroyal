@@ -172,7 +172,7 @@ class Postusermodel extends CI_Model {
 		}else{
 			$data['kelas'] = '1';
 		} 
-
+		$data['data'] = $ticket_price;
 		if ($data['status']){ 
 
 			$jumlah_rollover = $this->db->get('tb_rollover')->num_rows();
@@ -199,7 +199,7 @@ class Postusermodel extends CI_Model {
 			$data['type'] 		= 'success';
 			$data['status'] 	= true;  
 			$data['message'] 	= 'Success Buy One Ticket';
-			$data['data'] = $ticket_price;
+			
 		}
 		$this->mainmodel->Always_Load();
 		////////////////////////////////////////////////////////////////////////////////////////////
