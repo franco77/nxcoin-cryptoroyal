@@ -27,22 +27,45 @@ class Order extends CI_Controller {
         $booking = $this->marketmodel->get_booking(post('id'));
         $amount = $booking->amount;
         $booking_user_id = $booking->user_id;
-        if ($booking_user_id == userid()){
-            $this->walletmodel->pengurangan('A', ($amount * -1), userid(), 'BOOKING CANCEL');
-            $this->marketmodel->deactivateBooking(post('id'));
+        if ($booking_user_id != userid() || $booking->status != 'A'){
+            
+            return response([
+                'message' => 'Failed Cancel Order, Your booking has been canceled',
+                'heading' => 'Failed',
+                'type' => 'error',
+                'status' => 0,
+                'csrf_data' => $this->security->get_csrf_hash(),
+            ],200)->json();
+            
         }
         //redirect($_SERVER['HTTP_REFERER']);
 
-        if( $booking->type == 'B' && $booking->status == 'A') {
-            $price = $booking->price;
-            $amount = $booking->amount;
+        if( $booking->type == 'B' ) {
 
-            $total = bcmul($price, $amount, 8);
-            $fee = bcdiv( bcmul($total, "1.4", 8), 100, 8);
-            $totalSend = bcsub($total, $fee, 8);
-            $blockchain = $this->marketmodel->blockchain2;
-            $wallet = $this->walletmodel->get_wallet('BTC', $booking->user_id);
+            $canceled = $this->cancel_buy( $booking );
+
         }
+
+        if( $booking->type == 'S' ) {
+            $canceled = $this->cancel_sell( $booking );
+        }
+
+        if(!$canceled['status']) {
+
+            return response([
+                'message' => 'Failed cancel order.',
+                'heading' => 'Failed',
+                'type' => 'error',
+                'status' => 1,
+                'csrf_data' => $this->security->get_csrf_hash(),
+                'sent' => $canceled['sent']
+            ],200)->json();
+
+
+        }
+
+        $this->marketmodel->deactivateBooking(post('id'));
+
         $data = [
             'message' => 'Your order has been canceled.',
             'heading' => 'Success',
@@ -51,6 +74,53 @@ class Order extends CI_Controller {
             'csrf_data' => $this->security->get_csrf_hash(),
         ];
         return $this->output->set_output(json_encode($data));
+    }
+
+    private function cancel_sell( $booking ) {
+        
+        $amount = $booking->amount;
+
+        $sent = $this->walletmodel->pengurangan('A', ($amount * -1), userid(), 'BOOKING CANCEL');
+        return [
+            'status' => $sent,
+            'sent' => $sent
+        ];
+
+    }
+    private function cancel_buy( $booking ) {
+
+        $price = $booking->price;
+        $amount = $booking->amount;
+
+        $total = bcmul($price, $amount, 8);
+        $fee = bcdiv( bcmul($total, "1.4", 8), 100, 8);
+        $totalSend = bcsub($total, $fee, 8);
+        $blockchain = $this->marketmodel->blockchain2;
+        $wallet = $this->walletmodel->get_wallet('BTC', $booking->user_id);
+        
+        $sent = $blockchain->send(
+            $wallet->wallet_address,
+            convertToSatoshi($totalSend),
+            $this->adminBtcAddress,
+            convertToSatoshi($fee)
+        );
+        
+        if(array_key_exists('success', $sent)) {
+
+            if( !$sent['success'] ) {
+                $status = false;
+            }
+
+        } else {
+            $status = false;
+        }
+
+        $status = true;
+        $this->walletmodel->pengurangan('A', ($$total * -1), userid(), 'BOOKING CANCEL');
+        return $data = [
+            'status' => $status,
+            'sent' => $sent
+        ];
     }
     public function sell() {
         $this->load->model('marketmodel');
