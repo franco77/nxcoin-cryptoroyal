@@ -20,7 +20,7 @@ class Postusermodel extends CI_Model {
 	public function __construct() {
 
 		$nx_price = $this->marketmodel->get_latest_price('USD');
-		$this->ticket_price['NXCC'] = $ticket_price_nxcc = bcdiv($nx_price, "11", 8);
+		$this->ticket_price['NXCC'] = $ticket_price_nxcc = bcdiv("11", $nx_price, 8);
 		
 	}
 
