@@ -74,7 +74,7 @@ if ( ! function_exists( 'generateTxid' ) ) {
 	* @return void
 	* @author
 	**/
-	function generateTxid($nomor)
+	function generateTxid($nomor = NULL)
 	{
 		$CI 	=& get_instance();
 		$get 	= $CI->db->get('tb_rollover');

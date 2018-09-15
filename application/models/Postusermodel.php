@@ -11,7 +11,18 @@ class Postusermodel extends CI_Model {
 	 * @author Ayatulloh Ahad Robanie [ayatulloh@idprogrammer.com]
 	 **/
 
+	private $ticket_price = [
+		'USD' => 11,
+		'NXCC' => NULL
+	];
 	
+
+	public function __construct() {
+
+		$nx_price = $this->marketmodel->get_latest_price('USD');
+		$this->ticket_price['NXCC'] = $ticket_price_nxcc = bcdiv($nx_price, "11", 8);
+		
+	}
 
 	
 
@@ -123,8 +134,14 @@ class Postusermodel extends CI_Model {
 		$userdata 			= userdata();
 		$data['csrf_data']	= $this->security->get_csrf_hash();
 
+		$ticket_price = $this->ticket_price['NXCC'];
+
 		$walleta = $this->walletmodel->cek_balance('A', $userdata->id);
-		if ($walleta < 11){
+		if(!$ticket_price) {
+			$data['status'] 	= false; 
+			$data['message'] 	= 'Error 500';
+		}
+		if ($walleta < $ticket_price){
 			$data['status'] 	= false; 
 			$data['message'] 	= 'Your Balance is Insuficient';
 		}
@@ -160,6 +177,7 @@ class Postusermodel extends CI_Model {
 
 			$jumlah_rollover = $this->db->get('tb_rollover')->num_rows();
 			$walleta = $this->walletmodel->cek_balance('A', $userdata->id); 
+			
 			if ($walleta >= 11){
 				$object = array(
 					'rollover_userid'	=> $userdata->id,

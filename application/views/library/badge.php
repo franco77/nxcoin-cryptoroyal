@@ -59,7 +59,7 @@
                         </div>
                     </div> 
                 </div>
-                
+
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
                         <div class="info d-flex align-items-center">
@@ -69,6 +69,17 @@
                             <div style="margin-left: 10px">
                                 <h3 id="btcBalance" class="text-white mb-0"></h3>
                                 <span class="text-white op-5">BTC Wallet</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                        <div class="info d-flex align-items-center">
+                            <div class="m-r-10">
+                                <img src="https://cdn4.iconfinder.com/data/icons/proglyphs-shopping-and-finance/512/Coin_-_Dollar-512.png" style="width: 55px; filter: brightness(0) invert(1);">
+                            </div>
+                            <div style="margin-left: 10px">
+                                <h3 class="text-white mb-0"><?= $this->marketmodel->get_latest_price('USD'); ?></h3>
+                                <span class="text-white op-5">NXCC/USD</span>
                             </div>
                         </div>
                     </div>
