@@ -224,7 +224,7 @@ class Walletmodel extends CI_Model {
 		$userid = ($userid) ? $userid : userid();
 
 		$data = $this->db->select('*')->from('tb_wallet')->where('wallet_userid', $userid)
-		->like('wallet_desc', 'WITHDRAW_TO : ')
+		->like('wallet_desc', 'WITHDRAW_TO : ', 'both')
 		->get()->result();
 
 		return $data;
