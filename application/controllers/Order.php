@@ -82,7 +82,7 @@ class Order extends CI_Controller {
 
         $sent = $this->walletmodel->pengurangan('A', ($amount * -1), userid(), 'BOOKING CANCEL');
         return [
-            'status' => $sent,
+            'status' => true,
             'sent' => $sent
         ];
 
