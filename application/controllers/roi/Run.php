@@ -28,6 +28,7 @@ class Run extends CI_Controller {
 		$this->db->where('stc_date_end >= ', sekarang());
 		$this->db->where('date_format(next_profit,"%Y-%m-%d")', $current);
 		$ge = $this->db->get('tb_stacking');
+		return response($ge->result())->json();
 		$bonuses_sent = [];
 		if ($ge->num_rows() > 0){ 
 			foreach ($ge->result() as $get_stc) { 
