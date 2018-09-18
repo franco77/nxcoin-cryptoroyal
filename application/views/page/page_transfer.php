@@ -197,7 +197,7 @@
             dataType: 'json',
             data: $('#trfWalletA').serialize(), 
         })
-        .done(function( result ) { 
+        .done(function( result ) {
             if (result.status){
                 $.ajax({
     	            url: url,
@@ -207,7 +207,7 @@
     	        })
     	        .done(function( result ) { 
     	        	// validate apakah data sudah sesuai
-    	        	if (result){
+    	        	if (result.status){
 	    	        	$.ajax({
 	    	        		url: 'userpost/postdata/success_send',
 	    	        		type: 'get',
@@ -215,8 +215,8 @@
 	    	        		data: $('#trfWalletA').serialize(),
 	    	        	})
 	    	        	.done(function(result) {
-	    	        		$('input[name=csrf_nx]').val( result.csrf_data );
-		    	        	console.log(result);
+							$('input[name=csrf_nx]').val( result.csrf_data );
+
 		    	            swal({
 		    	                title: result.heading,
 		    	                text: result.message,
