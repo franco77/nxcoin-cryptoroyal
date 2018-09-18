@@ -259,7 +259,8 @@
     	                } 
     	        	})	
     	        }).always(function() {
-		            $('body').loading('stop'); 
+					$('body').loading('stop'); 
+					document.USERNXCBALANCE.refresh();
 		        });
             }else{
             	$('input[name=csrf_nx]').val( result.csrf_data );
