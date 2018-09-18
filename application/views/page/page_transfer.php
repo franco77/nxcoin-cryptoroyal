@@ -1,12 +1,13 @@
 <?php 
 	$this->template->title->set('Transfer');
 	$userdata = userdata();
-	echo $this->load->view('library/badge', '', TRUE);
+	
 	$this->db->where(array('wallet_userid' => userid(), 'wallet_type' => 'A'));
 	$wallet = $this->db->get('tb_wallet')->row()->wallet_address;
 ?>
 <script type="text/javascript">
 	$('#breadcrumb').hide();
+	$("#badge").show();
 </script>
 <div class="row">
 	<div class="col-md-4">
