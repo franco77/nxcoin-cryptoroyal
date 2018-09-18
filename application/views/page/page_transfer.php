@@ -31,7 +31,7 @@
 		        			<input type="text" name="oneCode" class="form-control" id="2fa">
 		        		</div>
 		        	<?php } ?><input type="hidden" name="X-API-KEY" value="x6Hbju8i7HkhsiYjua2hj">
-		        	<button class="btn btn-success" id="buttonA" type="submit">SEND</button>
+		        	<button class="btn btn-success" data-wallet-type='A' id="buttonA" type="submit">SEND</button>
 		        <?php echo form_close(); ?>
 		    </div>
 		</div>
@@ -113,7 +113,7 @@
 		        			<input type="text" name="oneCode" class="form-control" id="2fa">
 		        		</div>
 		        	<?php } ?>
-		        	<button class="btn btn-success" id="buttonB" type="submit">SEND</button>
+		        	<button class="btn btn-success" data-wallet-type='B' id="buttonB" type="submit">SEND</button>
 		        <?php echo form_close(); ?>
 		    </div>
 		</div>
@@ -177,7 +177,13 @@
 
 <script type="text/javascript">
 
-	$('#buttonA').click(function(event) {
+	$('#buttonA, #buttonB').click(function(event) {
+
+		if( $(this).data('wallet-type') == 'A' ) {
+			var form_data = $('#trfWalletA').serialize();
+		} else {
+			var form_data = $('#trfWalletB').serialize();
+		}
         /* Act on the event */
         // $('body').LoadingOverlay('show');
         event.preventDefault();
@@ -196,7 +202,7 @@
             url: 'userpost/postdata/cek_data_before_send',
             type: 'post',
             dataType: 'json',
-            data: $('#trfWalletA').serialize(), 
+            data: form_data, 
         })
         .done(function( result ) {
             if (result.status){
@@ -204,7 +210,7 @@
     	            url: url,
     	            type: meth,
     	            dataType: 'json',
-    	            data: $('#trfWalletA').serialize(),  
+    	            data: form_data,  
     	        })
     	        .done(function( result ) { 
     	        	// validate apakah data sudah sesuai
@@ -213,7 +219,7 @@
 	    	        		url: 'userpost/postdata/success_send',
 	    	        		type: 'get',
 	    	        		dataType: 'json',
-	    	        		data: $('#trfWalletA').serialize(),
+	    	        		data: form_data,
 	    	        	})
 	    	        	.done(function(result) {
 							$('input[name=csrf_nx]').val( result.csrf_data );
@@ -285,33 +291,46 @@
     });
 
 
-	$('#buttonB').click(function(event) {
-		event.preventDefault();
-		$('body').loading();
-		$.ajax({
-			url: '<?php echo base_url('userpost/postdata/sendWallet') ?>',
-			type: 'post',
-			dataType: 'json',
-			data: $('#trfWalletB').serialize(),
-		})
-		.done(function(result) {
-			$('input[name=csrf_nx]').val( result.csrf_data );
-			swal(
-              result.heading,
-              result.message,
-              result.type,
-            ).then( function(){ 
-                if( result.status ){ 
-                    window.location.reload();
-                } 
-            });
-		})
-		.fail(function() {
-			console.log("error");
-		})
-		.always(function() {
-			$('body').loading('stop');
-		});
+	// $('#buttonB').click(function(event) {
+	// 	event.preventDefault();
+	// 	$('body').loading();
+	// 	$.ajax({
+	// 		url: '<?php echo base_url('userpost/postdata/cek_data_before_send') ?>',
+	// 		type: 'post',
+	// 		dataType: 'json',
+	// 		data: $('#trfWalletB').serialize(),
+	// 	})
+	// 	.done(function(result) {
+	// 		$('input[name=csrf_nx]').val( result.csrf_data );
+	// 		if( result.status ) {
+	// 			$.ajax({
+    // 	            url: '<?php echo base_url('userpost/postdata/send_wallet') ?>',
+    // 	            type: meth,
+    // 	            dataType: 'json',
+    // 	            data: $('#trfWalletB').serialize(),  
+    // 	        })
+    // 	        .done(function( result ) {
+
+	// 			});
+	// 		} else {
+	// 			$('input[name=csrf_nx]').val( result.csrf_data );
+    
+	//             swal({
+	//                 title: result.heading,
+	//                 text: result.message,
+	//                 type: result.type
+	//             }) 
+	//             $('body').loading('stop');
+	// 		}
+	// 	})
+	// 	.fail(function() {
+	// 		console.log("error");
+	// 	})
+	// 	.always(function() {
+	// 		$('body').loading('stop');
+	// 	});
+
 		
-	});
+		
+	// });
 </script>
