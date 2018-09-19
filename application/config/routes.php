@@ -15,3 +15,4 @@ $route['wallet/balance/(:any)'] = 'wallet/balance/$1';
 $route['admin/order/history'] = 'adminarea/order/history/$1';
 $route['order/history'] = 'order/history/$1';
 $route['admin/user-bonuses/(:any)'] = 'adminarea/bonuses/get_bonus/$1';
+$route['walletbtc/confirm-withdraw'] = 'walletbtc/confirm_request_wd';
