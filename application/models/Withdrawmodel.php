@@ -38,10 +38,8 @@ class Withdrawmodel extends CI_Model {
         $insert_id = $this->db->insert_id();
         $request_object = $this->find($insert_id);
 
-        $bootstrap_css = $this->load->view('library/bootstrap-inline-css',NULL,TRUE);
         $email_template = $this->load->view('library/email-request-wd',[
-            'request' => $request_object,
-            'bootstrap' => $bootstrap_css
+            'request' => $request_object
         ], TRUE);
         
         $subject = 'CRYPTOROYAL - Request Withdrawal';
