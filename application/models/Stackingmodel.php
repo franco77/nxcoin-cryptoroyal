@@ -40,6 +40,28 @@ class Stackingmodel extends CI_Model {
 		return $amount;
 	}
 
+	public function get_omset_jaringan( $userid = NULL ) {
+
+		$userid = ($userid) ? $userid : userid();
+
+		$sql = 'select sum(s.stc_amount) as omset from (
+					SELECT id
+					from    ( select * from tb_users where position="right" order by `upline_id`, `id`) tb_users_sorted,
+							( select @pv := '.$userid.' ) initialisation
+					where find_in_set(`upline_id`, @pv) > 0
+					and @pv := concat(@pv, ",", `id`)
+				
+				) as u
+				join tb_stacking s on s.stc_userid = u.id';
+		$query = $this->db->query($sql);
+		$result = $query->row();
+		if(!$result) {
+			return 0;
+		}
+		return $result->omset;
+		
+	}
+
 }
 
 /* End of file  */

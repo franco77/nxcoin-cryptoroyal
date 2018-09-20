@@ -83,6 +83,18 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                        <div class="info d-flex align-items-center">
+                            <div class="m-r-10">
+                                <img src="assets/logo-nx.png" style="width: 75px;">
+                            </div>
+                            <div style="margin-left: 10px">
+                                <h3 class="text-white mb-0"><?= number_format( $this->stackingmodel->get_omset_jaringan(),2,'.',','); ?></h3>
+                                <span class="text-white op-5">Referral Staking</span>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
                 
             </div>
