@@ -54,17 +54,17 @@ class Walletbtc extends CI_Controller {
 
         }
 
-        $btcBalance = $this->marketmodel->blockchain->address_balance($wallet_sender->wallet_address);
-        if(!array_key_exists('balance', $btcBalance)) {
+        // $btcBalance = $this->marketmodel->blockchain->address_balance($wallet_sender->wallet_address);
+        // if(!array_key_exists('balance', $btcBalance)) {
 
             
-            $message = 'Sorry, we cannot proccess your request now.';
-            $success = FALSE;
+        //     $message = 'Sorry, we cannot proccess your request now.';
+        //     $success = FALSE;
 
-        } else if( $btcBalance['balance'] < $amount ) {
-            $message = 'Your BTC Balance is insuficient';
-            $success = FALSE;
-        }
+        // } else if( $btcBalance['balance'] < $amount ) {
+        //     $message = 'Your BTC Balance is insuficient';
+        //     $success = FALSE;
+        // }
 
         
 
@@ -84,8 +84,36 @@ class Walletbtc extends CI_Controller {
 
 
 
-        $sent = $this->walletmodel->withdraw_btc( userid(), $amount, $wallet_sender, $receiver );
+        //$sent = $this->walletmodel->withdraw_btc( userid(), $amount, $wallet_sender, $receiver );
+        $this->load->model('withdrawmodel');
 
+        $request = $this->withdrawmodel->get_request(userid(), 'BTC', 'waiting');
+
+        if( $request->num_rows() > 0 ) {
+
+            $request = $request->row();
+
+            if( $this->withdrawmodel->is_request_expired( $request->req_created_at ) ) {
+
+                $this->withdrawmodel->cancel_request($request->id_request);
+                
+
+            } else {
+                
+                return response([
+                    'status' => 0,
+                    'message' => 'You already request withdraw, please check your email',
+                    'heading' => 'Failed',
+                    'type' => 'error',
+                    'csrf_data' => $this->security->get_csrf_hash(),
+                ])->json();
+
+            }
+
+        }
+
+
+        $sent = $this->withdrawmodel->create_request( userid(), $amount, $wallet_sender, $receiver );
         if( !$sent['status'] ) {
 
             return response([
@@ -103,12 +131,35 @@ class Walletbtc extends CI_Controller {
         return response([
 
             'status' => 1,
-            'message' => 'Withdraw Btc Success',
+            'message' => 'Request Withdraw Btc Success, Please check your email to validate request',
             'heading' => 'Success',
             'type'  => 'success',
             'csrf_data' => $this->security->get_csrf_hash(),
             'wd_res' => $sent
 
         ], 200)->json();
+    }
+    
+    public function confirm_request_wd() {
+
+        $code = get('code');
+        $this->load->model('withdrawmodel');
+        $request = $this->withdrawmodel->find_code($code);
+        if(!$request) {
+            die('<h1>request not found</h1>');
+        }
+
+        $userid         = $request->req_user_id;
+        $amount         = $request->req_amount;
+        $wallet_sender  = $this->walletmodel->get_wallet('BTC', $request->req_user_id);
+        $receiver       = $request->req_wallet_receiver;
+
+        $sent = $this->walletmodel->withdraw_btc( $userid, $amount, $wallet_sender, $receiver );
+        if( !$sent['status'] ) {
+            die(var_dump($sent));
+        }
+        $this->withdrawmodel->approve_request( $request->id_request );
+        echo '<h1>Withdraw Approved</h1>';
+
     }
 }
