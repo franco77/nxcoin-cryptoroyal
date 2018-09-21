@@ -18,6 +18,7 @@
 		        				<th>Username</th>
 		        				<th>Email</th>
 		        				<th>Full Name</th>
+		        				<th>Staking Amount</th>
 		        				<th>Option</th>
 		        			</tr>
 		        		</thead>
