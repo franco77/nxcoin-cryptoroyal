@@ -54,6 +54,7 @@
 		        				<td><?php echo $var->username ?></td>
 		        				<td><?php echo $var->email ?></td>
 		        				<td><?php echo $var->user_fullname ?></td>
+		        				<td><?php echo $this->stackingmodel->get_amount($var->id) ?></td>
 		        				<td><?php echo '<a href="'. site_url('referral?networkView='.$var->user_code) .'" class="btn btn-success b-warn text-warn btn-sm">'.fa('users').'</a>'; ?></td>
 		        			</tr>
 		        		<?php } ?>
