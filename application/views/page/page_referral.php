@@ -5,6 +5,28 @@
 	$link_referral 		= site_url( 'auth/register/refid/'.$my_username.'' );
 ?>
 
+
+<div class="row">
+	<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+		<div id="leadership_achievments"></div>
+	</div>
+	<div class="col-md-4">
+		<div class="card">
+			<div class="card-body collapse show">
+		        <h4 class="card-title">Affiliate Link<hr></h4>
+		        <label>Click copy to share</label>
+		        <div class="input-group mt-2">
+					<input type="text"  value="<?php echo $link_referral ?>" class="form-control text-center disabled" disabled readonly> 
+					<div class="input-group-btn">
+						<button type="button" class="btn btn-success copy" data-id="<?php echo $link_referral ?>">COPY</button>
+					</div>
+				</div>
+		    </div>
+		</div>
+	</div>
+</div>
+
+
 <div class="row">
 	<div class="col-md-8">
 		<div class="card">
@@ -70,18 +92,15 @@
 		    </div>
 		</div>
 	</div>
-	<div class="col-md-4">
-		<div class="card">
-			<div class="card-body collapse show">
-		        <h4 class="card-title">Affiliate Link<hr></h4>
-		        <label>Click copy to share</label>
-		        <div class="input-group mt-2">
-					<input type="text"  value="<?php echo $link_referral ?>" class="form-control text-center disabled" disabled readonly> 
-					<div class="input-group-btn">
-						<button type="button" class="btn btn-success copy" data-id="<?php echo $link_referral ?>">COPY</button>
-					</div>
-				</div>
-		    </div>
-		</div>
-	</div>
+	
 </div>
+
+<script src="<?= site_url('assets/croyal/Leadership.js'); ?>"></script>
+
+<script>
+$(document).ready(function() {
+
+	var leadership = $("#leadership_achievments").CrLeadership().getAchievments();
+
+});
+</script>
