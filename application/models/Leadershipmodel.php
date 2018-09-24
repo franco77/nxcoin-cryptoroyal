@@ -64,6 +64,7 @@ class Leadershipmodel extends CI_Model {
         $people         = count($networks); // how many people under this userid
         $invest         = $this->stackingmodel->get_amount( $userid ); // total investation of this user
         $omset          = $this->stackingmodel->get_omset_jaringan( $userid ); // how many omset of this user
+        $omset          = ($omset) ? $omset : 0;
         $sponsor_stars  = $this->calc_sponsor_stars( $networks );
 
         $leader_detail = [
