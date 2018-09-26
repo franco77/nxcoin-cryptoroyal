@@ -2,6 +2,8 @@
 
 class Bonus extends CI_Controller {
 
+    protected $in_debug_mode = FALSE;
+
     public function __construct() {
 
         parent::__construct();
@@ -10,13 +12,16 @@ class Bonus extends CI_Controller {
         }
     }
 
-    public function run($type) {
+    public function run($type, $mode = FALSE) {
+
+        $this->in_debug_mode = (boolean) $mode;
 
         switch ($type) {
             case 'leadership':
                 $this->leadership();
                 break;
         }
+        
         $this->mailermodel->send('sugamirza2@gmail.com','Cryptoroyal - Bonus Command','its running dude!');
 
 
@@ -79,7 +84,9 @@ class Bonus extends CI_Controller {
                     
 
                 }
-                $this->bonusmodel->insert_leadership($leader->id, $total_bonus);
+                if(!$this->in_debug_mode) {
+                    $this->bonusmodel->insert_leadership($leader->id, $total_bonus);
+                }
 
             }
 
