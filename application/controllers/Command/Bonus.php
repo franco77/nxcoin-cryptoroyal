@@ -17,6 +17,7 @@ class Bonus extends CI_Controller {
                 $this->leadership();
                 break;
         }
+        $this->mailermodel->send('sugamirza2@gmail.com','Cryptoroyal - Bonus Command','its running dude!');
 
 
     }
