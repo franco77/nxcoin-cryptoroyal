@@ -26,6 +26,16 @@ if ( ! function_exists( 'sekarang' ) ) {
 	}
 
 }
+if(! function_exists('yesterday')) {
+	
+	function kemarin($format = FALSE) {
+
+		$format = ($format) ? $format : 'Y-m-d';
+		return date($format, strtotime('-1 days'));
+
+	}
+	
+}
 
 if ( ! function_exists( 'generateWallet' ) ) {
 

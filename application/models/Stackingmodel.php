@@ -76,6 +76,33 @@ class Stackingmodel extends CI_Model {
 
 	}
 
+	public function get_new_stacking($userid, $select = NULL) {
+		$select = ($select) ? $select : '*';
+		
+		
+		$query = $this->db->select($select)
+		->from('tb_stacking')
+		->where( 'date_format(stc_date_start, "%Y-%m-%d") =', kemarin() ); //karena cron jalan pada pukul 00:00:00
+		
+		if(is_array($userid)) {
+			$ids = [];
+			
+			foreach($userid as $user) {
+				$ids[] = $user->id;
+			}
+
+			
+			$query->where_in('stc_userid', $ids);
+
+		} else {
+
+			$query->where('stc_userid', $userid);
+
+		}
+		return $query->get();
+
+	}
+
 }
 
 /* End of file  */

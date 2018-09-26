@@ -206,4 +206,15 @@ class Leadershipmodel extends CI_Model {
         }
         return 0;
     }
+
+    public function get_leaders( $select = NULL ) {
+
+        $select = ($select) ? $select : '*';
+
+        return $this->db->select($select)
+        ->from('tb_users')
+        ->where('user_stars >',0)
+        ->order_by('user_stars', 'desc')
+        ->get();
+    }
 }

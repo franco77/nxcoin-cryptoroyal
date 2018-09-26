@@ -525,9 +525,10 @@ class Usermodel extends CI_Model {
 		return $data;
 	}
 
-	public function get_networks($userid = NULL) {
+	public function get_networks($userid = NULL, $select = NULL) {
+		$select = ($select) ? $select : '*';
 		$sql = '
-			SELECT *
+			SELECT '.$select.'
 			from    ( select * from tb_users where position="right" order by `upline_id`, `id`) tb_users_sorted,
 					( select @pv := '.$userid.' ) initialisation
 			where find_in_set(`upline_id`, @pv) > 0
