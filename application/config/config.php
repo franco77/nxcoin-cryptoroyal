@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 if(php_sapi_name() !== 'cli') {
-    $config['base_url'] = 'https://'. $_SERVER['HTTP_HOST'].'/';
+    $config['base_url'] = 'https://'. $_SERVER['HTTP_HOST'].'/account/';
 }
 // $config['base_url'] = 'http://localhost/IDPROGRAMMER/NX_NEW/';
 
