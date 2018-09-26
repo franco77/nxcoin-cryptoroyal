@@ -2,7 +2,7 @@
 
 class Bonus extends CI_Controller {
 
-    protected $in_debug_mode = FALSE;
+    protected $in_debug_mode = 'false';
 
     public function __construct() {
 
@@ -12,10 +12,11 @@ class Bonus extends CI_Controller {
         }
     }
 
-    public function run($type, $mode = FALSE) {
+    public function run($type, $mode = 'false') {
 
-        $this->in_debug_mode = (boolean) $mode;
-
+        $this->in_debug_mode = $mode;
+        echo "DEBUG :$mode\n";
+        
         switch ($type) {
             case 'leadership':
                 $this->leadership();
@@ -31,7 +32,7 @@ class Bonus extends CI_Controller {
         
         $this->load->model('leadershipmodel');
         $this->load->model('stackingmodel');
-
+        
         $leaders = $this->leadershipmodel->get_leaders(['id','username','user_stars']);
 
         if($leaders->num_rows() <= 0) {
@@ -84,7 +85,7 @@ class Bonus extends CI_Controller {
                     
 
                 }
-                if(!$this->in_debug_mode) {
+                if($this->in_debug_mode !== 'false') {
                     $this->bonusmodel->insert_leadership($leader->id, $total_bonus);
                 }
 
