@@ -3,16 +3,18 @@
 class Bonus extends CI_Controller {
 
     protected $in_debug_mode = 'false';
-
+    private $cmd_pass = '3c23d3fe9cf8814f7c078454de359e56';
     public function __construct() {
 
         parent::__construct();
-        if(php_sapi_name() !== 'cli' || strpos( php_sapi_name(), 'cgi' !== false )) {
-            exit('You busted...!');
-        }
+        
     }
 
-    public function run($type, $mode = 'false') {
+    public function run($type,$pass, $mode = 'false') {
+        
+        if(md5($pass) !== $this->cmd_pass ) {
+            exit('You Busted!');
+        }
 
         $this->in_debug_mode = $mode;
         echo "DEBUG :$mode\n";
@@ -84,7 +86,7 @@ class Bonus extends CI_Controller {
                     
 
                 }
-                if($this->in_debug_mode !== 'false') {
+                if($this->in_debug_mode == 'false') {
                     $this->bonusmodel->insert_leadership($leader->id, $total_bonus);
                 }
 

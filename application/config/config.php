@@ -23,11 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-if(array_key_exists('HTTP_HOST',$_SERVER) ) {
-    $config['base_url'] = 'https://'.$_SERVER['HTTP_HOST'].'/account/';
-} else {
-    $config['base_url'] = 'https://cryptoroyal.co/account/';
-}
+$config['base_url'] = 'https://'.$_SERVER['HTTP_HOST'].'/account/';
 // $config['base_url'] = 'http://localhost/IDPROGRAMMER/NX_NEW/';
 
 /*
