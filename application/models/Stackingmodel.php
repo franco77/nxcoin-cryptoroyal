@@ -62,6 +62,20 @@ class Stackingmodel extends CI_Model {
 		
 	}
 
+	public function get_stacking_batch($userid, $amount = NULL) {
+
+
+		$query = $this->db->from('tb_stacking')
+		->where_in('stc_userid', $userid);
+
+		if($amount) {
+			$query->where('stc_amount >=', $amount);
+		}
+		return $query->get();
+		
+
+	}
+
 }
 
 /* End of file  */

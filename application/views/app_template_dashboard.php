@@ -153,6 +153,7 @@
             'assets/dist/js/custom.js',  
             'assets/extra-libs/c3/d3.min.js',
             'assets/extra-libs/c3/c3.min.js',  
+            'assets/croyal/Leadership.js',  
         ); 
         foreach ($js as $js) {
             echo script_tag( $js )."\n";
@@ -244,7 +245,9 @@
         site_url: '<?= base_url(); ?>',
     };
     var CR_USERID = '<?= userid(); ?>';
-
+    $(document).ready(function() {
+        $.fn.CrLeadership().updateStar();
+    });
 
     </script>
 </body>

@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Leadershipmodel extends CI_Model {
-
+    private $min_stacking_amount = 2001;
     protected $qualifications = [
         1 => [
             'min_people' => 10,
@@ -57,21 +57,23 @@ class Leadershipmodel extends CI_Model {
         $userid = ($userid) ? $userid : userid();
 
         $networks = $this->usermodel->get_networks( $userid );
-        
-        
+        $direct_referral_id = $this->extract_direct_referral($userid, $networks);
+
         
         // QUALIFICATIONS
-        $people         = count($networks); // how many people under this userid
-        $invest         = $this->stackingmodel->get_amount( $userid ); // total investation of this user
+        $people = $this->stackingmodel->get_stacking_batch($direct_referral_id,$this->min_stacking_amount)->num_rows(); // how many people under this userid which qualified
+        //$invest         = $this->stackingmodel->get_amount( $userid ); // total investation of this user
         $omset          = $this->stackingmodel->get_omset_jaringan( $userid ); // how many omset of this user
         $omset          = ($omset) ? $omset : 0;
         $sponsor_stars  = $this->calc_sponsor_stars( $networks );
+        
 
         $leader_detail = [
             'people'        => $people,
-            'invest'        => $invest,
+            //'invest'        => $invest,
             'omset'         => $omset,
             'sponsor_stars' => $sponsor_stars,
+            'direct_referral_id' => $direct_referral_id
         ];
         $leader_detail['achivements'] = $this->decide_stars( $leader_detail );
         
@@ -96,9 +98,9 @@ class Leadershipmodel extends CI_Model {
                 $min_people_qualified = TRUE;
             }
 
-            if( $leader_detail['invest'] >= $qualification['min_invest'] ) {
-                $min_invest_qualified = TRUE;
-            }
+            // if( $leader_detail['invest'] >= $qualification['min_invest'] ) {
+            //     $min_invest_qualified = TRUE;
+            // }
 
             if( $leader_detail['omset'] >= $qualification['min_omset'] ) {
                 $min_omset_qualified = TRUE;
@@ -134,7 +136,7 @@ class Leadershipmodel extends CI_Model {
             
             $stars_qualification['star_'.$key] = [
                 'min_people_qualified' => (string) $min_people_qualified,
-                'min_invest_qualified' => (string) $min_invest_qualified,
+                //'min_invest_qualified' => (string) $min_invest_qualified,
                 'min_omset_qualified' => (string) $min_omset_qualified,
                 'min_sponsor_star_qualified' => (string) $min_sponsor_star_qualified,
                 'achived' => $achived
@@ -179,5 +181,29 @@ class Leadershipmodel extends CI_Model {
         $bonus = bcdiv( bcmul($staking_amount, $percentage, 8), "100", 8 );
         return $bonus;
 
+    }
+    public function extract_direct_referral($userid, $networks) {
+        $direct_ref = [];
+        foreach( $networks as $net ) {
+            if($net->referral_id == $userid) {
+                $direct_ref[] = $net->id;
+            }
+        }
+        return $direct_ref;
+    }
+
+    public function update_star($userid, $star) {
+        
+        $updated = $this->db
+            ->set('user_stars', $star)
+            ->where('id', $userid)
+            ->update('tb_users');
+
+        if($updated) {
+
+            return 1;
+            
+        }
+        return 0;
     }
 }
