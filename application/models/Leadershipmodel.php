@@ -61,7 +61,12 @@ class Leadershipmodel extends CI_Model {
 
         
         // QUALIFICATIONS
-        $people = $this->stackingmodel->get_stacking_batch($direct_referral_id,$this->min_stacking_amount)->num_rows(); // how many people under this userid which qualified
+        if(count($networks) > 0) {
+            $people = $this->stackingmodel->get_stacking_batch($direct_referral_id,$this->min_stacking_amount)->num_rows(); // how many people under this userid which qualified
+        } else {
+            $people = 0;
+        }
+        
         //$invest         = $this->stackingmodel->get_amount( $userid ); // total investation of this user
         $omset          = $this->stackingmodel->get_omset_jaringan( $userid ); // how many omset of this user
         $omset          = ($omset) ? $omset : 0;
