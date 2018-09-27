@@ -73,8 +73,11 @@
 </div>
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript">
+$(document).ready(function() {
+
+
 	$("#tb_userlist").DataTable();
-	$('.bullseye').click(function(event) {
+	$('#tb_userlist').on('click','.bullseye',function(event) {
 		$('body').loading();
 		id = $(this).data('id');
 		$.ajax({
@@ -103,5 +106,6 @@
 		});
 		
 	});
+});
 </script>
  
