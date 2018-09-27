@@ -146,20 +146,25 @@ class Walletbtc extends CI_Controller {
         $this->load->model('withdrawmodel');
         $request = $this->withdrawmodel->find_code($code);
         if(!$request) {
-            die('<h1>request not found</h1>');
+            $message = 'Request not found!';
+        } else {
+            $userid         = $request->req_user_id;
+            $amount         = $request->req_amount;
+            $wallet_sender  = $this->walletmodel->get_wallet('BTC', $request->req_user_id);
+            $receiver       = $request->req_wallet_receiver;
+
+            $sent = $this->walletmodel->withdraw_btc( $userid, $amount, $wallet_sender, $receiver );
+            if( !$sent['status'] ) {
+                $message = 'Confirmation Failed';
+            } else {
+                $this->withdrawmodel->approve_request( $request->id_request );
+                $message = 'Your Withdraw request have been confirmed';
+            }
         }
 
-        $userid         = $request->req_user_id;
-        $amount         = $request->req_amount;
-        $wallet_sender  = $this->walletmodel->get_wallet('BTC', $request->req_user_id);
-        $receiver       = $request->req_wallet_receiver;
-
-        $sent = $this->walletmodel->withdraw_btc( $userid, $amount, $wallet_sender, $receiver );
-        if( !$sent['status'] ) {
-            die(var_dump($sent));
-        }
-        $this->withdrawmodel->approve_request( $request->id_request );
-        echo '<h1>Withdraw Approved</h1>';
+        $this->load->view('static/wd-confirm', [
+            'message' => $message
+        ]);
 
     }
 }
