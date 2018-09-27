@@ -7,7 +7,7 @@ class Order extends CI_Controller {
     protected $adminBtcAddress = '1EiY1JHBLvRvFFCbE6hit52Bxvz9VwdEFC';
     protected $minprice = [
         'BTC' => 0,
-        'USD' => 0.5
+        'USD' => 0.25
     ];
 	public function __construct()
 	{
