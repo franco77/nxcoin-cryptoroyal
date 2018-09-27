@@ -92,7 +92,8 @@ class Auth extends CI_Controller {
 		$this->ion_auth->logout();
 		$this->session->unset_userdata('view_profile', 'view_wd');
 
-		redirect('','refresh');
+		//redirect('https://www.google.com');
+		return response(['success' => 1])->json();
 	}
 
 

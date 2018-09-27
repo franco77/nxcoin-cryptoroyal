@@ -161,7 +161,9 @@
     ?>
     
     <script type="text/javascript">
-
+        var env = {
+            site_url: '<?= base_url(); ?>',
+        };
 
       function fallbackCopyTextToClipboard(text) {
         var textArea = document.createElement("textarea");
@@ -208,8 +210,9 @@
                         dataType: 'json',
                         data: {},
                     }) 
-                    .always(function() {
-                        window.location.reload();
+                    .done(function() {
+                        
+                        window.location.replace(env.site_url.replace('account/',''));
                     });
                     
                 }
@@ -241,9 +244,7 @@
         });
       });
     
-    var env = {
-        site_url: '<?= base_url(); ?>',
-    };
+    
     var CR_USERID = '<?= userid(); ?>';
     $(document).ready(function() {
         $.fn.CrLeadership().updateStar();
