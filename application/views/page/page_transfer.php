@@ -18,7 +18,7 @@
 		        	<div class="form-group">
 		        		<label for="walletA">Wallet Address</label>
 		        		<input type="text" name="address" id="address" class="form-control">		        		
-		        		<input type="text" name="address2" class="form-control" value="<?php echo $wallet ?>">		        		
+		        		<!-- <input type="text" name="address2" class="form-control" value="<?php echo $wallet ?>">		        		 -->
 		        	</div>
 		        	<div class="form-group">
 		        		<label for="amount">Amount Transfer</label>

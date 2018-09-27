@@ -158,6 +158,7 @@ class Marketmodel extends CI_Model {
         if($type !== NULL) {
             $this->db->where('type',$type);
         }
+        $this->db->order_by('booking_id','desc');
         $res = $this->db->get('tb_booking_orders')->result();
 
         if( !$res ) {

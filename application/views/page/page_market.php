@@ -432,7 +432,7 @@ var nx_token = $("meta[name=csrf-token]").attr('content');
 $(document).ready(function() {
 
 var pending_table   = $('#pending_table').DataTable({ "order": [[ 4, "desc" ]] });
-var order_history   = $('#order_history').DataTable({ "order": [[ 5, "desc" ]]});
+var order_history   = $('#order_history').DataTable({ "order": [[ 0, "desc" ]]});
 var market_sell     = $('#market_sell').DataTable();
 var market_buy      = $('#market_buy').DataTable();
 
@@ -722,6 +722,7 @@ var nxccBalance = $(".nxccBalance").UserBalance({ type:'nxcc'}).get();
 var badge = $("#badge_prices").CrPrice({test:'test'}).get();
 
 var marketOrderHistory = $("#tb_order_history").DataTable({
+    "order": [[ 0, "desc" ]],
     "processing": true,
     "serverSide": true,
     "ajax": env.site_url+'order/history',
