@@ -141,6 +141,7 @@ class Auth extends CI_Controller {
 		if ($activation)
 		{
 			// redirect them to the auth page
+			$this->session->unset_userdata('activation_mail');
 			$this->session->set_flashdata('message', $this->ion_auth->messages());
 			redirect("", 'refresh');
 		}
@@ -150,6 +151,45 @@ class Auth extends CI_Controller {
 			$this->session->set_flashdata('message', $this->ion_auth->errors());
 			redirect("auth/forgot_password", 'refresh');
 		}
+	}
+
+	public function resend_activation() {
+		$activation_mail = $this->session->userdata('activation_mail');
+
+		if($activation_mail) {
+			$data = [
+				'id' => $activation_mail['user_id'],
+				'identity' => $activation_mail['email'],
+				'activation' => $activation_mail['activation']
+			];
+			$message = $this->load->view($this->config->item('email_templates', 'ion_auth').$this->config->item('email_activate', 'ion_auth'), $data, true);
+
+			$this->email->clear();
+			$this->email->from($this->config->item('admin_email', 'ion_auth'), $this->config->item('site_title', 'ion_auth'));
+			$this->email->to($activation_mail['email']);
+			$this->email->subject($this->config->item('site_title', 'ion_auth') . ' - ' . $this->lang->line('email_activation_subject'));
+			$this->email->message($message);
+
+			if ($this->email->send() == TRUE)
+			{
+				$message = 'Success resend activation code';
+				$heading = 'Success';
+				$type = 'success';
+			} else {
+				$message = 'Failed resend activation code';
+				$heading = 'Failed';
+				$type = 'failed';
+			}
+			
+		}
+		return response([
+			'success' => 0,
+			'message' => $message,
+			'heading' => $heading,
+			'type' => $type,
+			'csrf_nx' => $this->security->get_csrf_hash()
+		])->json();
+		
 	}
 
 

@@ -1,3 +1,6 @@
+<?php
+    $activation_mail = $this->session->userdata('activation_mail');
+?>
 <h5 class="font-medium m-b-20">Login</h5>
                     </div>
                     <!-- Form -->
@@ -28,6 +31,13 @@
                                         <button class="btn btn-block btn-lg btn-info" name="do_login" type="submit">Log In</button>
                                     </div>
                                 </div>
+                                <?php if(!empty($activation_mail)) { ?>
+                                <div class="form-group text-center">
+                                    <div class="col-xs-12 p-b-20">
+                                        <button id="resend_activation" class="btn btn-block btn-lg btn-info">Resend Activation</button>
+                                    </div>
+                                </div>
+                                <?php } ?>
                                 <div class="form-group m-b-0 m-t-10">
                                     <div class="col-sm-12 text-center">
                                         Don't have an account? <a href="<?php echo base_url('auth/register') ?>" class="text-info m-l-5"><b>Sign Up</b></a>
@@ -80,6 +90,79 @@
                 }); 
             event.preventDefault();
         });
+        can_resend().then((r) => {
+            $("#resend_activation").prop('disabled', false);
+            console.log(r);
+        }).catch((r) => {
+            $("#resend_activation").prop('disabled', true);
+            console.log(r);
+        });
+
+        $("#resend_activation").on('click', function(e) {
+            e.preventDefault();
+            var _this = $(this);
+            
+            
+
+            $.ajax({
+                'url': '<?= site_url("auth/resend_activation");?>',
+                'method': 'post',
+                'data': {
+                    'csrf_nx': $("[name=csrf_nx]").val()
+                },
+                'type': 'application/json',
+                beforeSend: function() {
+                    $('body').loading();
+                    var at = {
+                        'at': new Date()
+                    };
+                    localStorage.setItem('resend_activation', JSON.stringify(at));
+                },
+                success:function(res) {
+                    $('input[name=csrf_nx]').val( res.csrf_nx );
+                    swal({
+                        title: res.heading,
+                        html: res.message,
+                        type: res.type,
+                    }).then(function() {
+                        _this.prop('disabled', true);
+                        setTimeout(function() {
+                            _this.prop('disabled', false);
+                        },30000);
+                        console.log(localStorage.getItem('resend_activation'));
+                    });
+                },
+                error: function(err) {
+                    console.log(err)
+                }
+            }).always(function(res) {
+                console.log(res);
+                $('body').loading('stop');
+            });
+
+            
+        });
+
+        function can_resend() {
+        return new Promise( function(res,rej) {
+            if(localStorage.getItem('resend_activation')) {
+                var resend = JSON.parse(localStorage.getItem('resend_activation'));
+                var current = new Date();
+                var ex = new Date(resend.at);
+                
+                var timeDiff = Math.abs(current.getTime() - ex.getTime());
+                var diffDays = timeDiff / 60000; 
+                if(diffDays >= 1) {
+                    res(diffDays);
+                } else {
+                    rej(diffDays);
+                }
+
+            } else {
+                rej(diffDays);
+            }
+        });
+        }
 
     });
 

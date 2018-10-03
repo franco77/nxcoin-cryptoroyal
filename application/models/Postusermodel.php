@@ -89,6 +89,14 @@ class Postusermodel extends CI_Model {
 			$this->ion_auth->register( post('username'), post('password'), post('email'), $additional_data, array(2) );
 
 			$get_id_last = $this->db->get_where('tb_users', array('username' => post('username')) )->row()->id;
+
+			//set session for resend email activation
+			$this->session->set_userdata('activation_mail',[
+				'user_id' => $get_id_last,
+				'email' => post('email'),
+				'activation' => $generate_pin
+			]);
+
 			$object = array(
 				array(
 					'wallet_userid' => $get_id_last,
