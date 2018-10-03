@@ -58,7 +58,7 @@ class Member extends CI_Controller {
 
 			else:   
 				# HALAMAN DASHBOARD DAN MEMBER AREA
-				
+				$this->session->unset_userdata('activation_mail');
 				$this->template->content->view('page/page_' .$filename, TRUE );
 				$this->template->publish('app_template_dashboard');
 				//$this->mainmodel->Always_Load();
