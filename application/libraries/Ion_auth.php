@@ -361,13 +361,14 @@ class Ion_auth
 			{
 				$message = $this->load->view($this->config->item('email_templates', 'ion_auth').$this->config->item('email_activate', 'ion_auth'), $data, true);
 
-				$this->email->clear();
-				$this->email->from($this->config->item('admin_email', 'ion_auth'), $this->config->item('site_title', 'ion_auth'));
-				$this->email->to($email);
-				$this->email->subject($this->config->item('site_title', 'ion_auth') . ' - ' . $this->lang->line('email_activation_subject'));
-				$this->email->message($message);
+				// $this->email->clear();
+				// $this->email->from($this->config->item('admin_email', 'ion_auth'), $this->config->item('site_title', 'ion_auth'));
+				// $this->email->to($email);
+				// $this->email->subject($this->config->item('site_title', 'ion_auth') . ' - ' . $this->lang->line('email_activation_subject'));
+				// $this->email->message($message);
+				$subject = $this->config->item('site_title', 'ion_auth') . ' - ' . $this->lang->line('email_activation_subject');
 
-				if ($this->email->send() == TRUE)
+				if ($this->mailermodel->send($email, $subject, $message))
 				{
 					$this->ion_auth_model->trigger_events(array('post_account_creation', 'post_account_creation_successful', 'activation_email_successful'));
 					$this->set_message('activation_email_successful');

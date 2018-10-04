@@ -164,13 +164,14 @@ class Auth extends CI_Controller {
 			];
 			$message = $this->load->view($this->config->item('email_templates', 'ion_auth').$this->config->item('email_activate', 'ion_auth'), $data, true);
 
-			$this->email->clear();
-			$this->email->from($this->config->item('admin_email', 'ion_auth'), $this->config->item('site_title', 'ion_auth'));
-			$this->email->to($activation_mail['email']);
-			$this->email->subject($this->config->item('site_title', 'ion_auth') . ' - ' . $this->lang->line('email_activation_subject'));
-			$this->email->message($message);
-
-			if ($this->email->send() == TRUE)
+			// $this->email->clear();
+			// $this->email->from($this->config->item('admin_email', 'ion_auth'), $this->config->item('site_title', 'ion_auth'));
+			// $this->email->to($activation_mail['email']);
+			// $this->email->subject($this->config->item('site_title', 'ion_auth') . ' - ' . $this->lang->line('email_activation_subject'));
+			// $this->email->message($message);
+			$subject = $this->config->item('site_title', 'ion_auth') . ' - ' . $this->lang->line('email_activation_subject');
+			$sent = $this->mailermodel->send($activation_mail['email'],$subject, $message);
+			if ($sent)
 			{
 				$message = 'Success resend activation code';
 				$heading = 'Success';

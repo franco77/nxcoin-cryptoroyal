@@ -1,27 +1,20 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+use Mailgun\Mailgun;
 class Mailermodel extends CI_Model {
 
-
+	protected $mailgun;
+	
 	public function __construct()
 	{
 		parent::__construct();
-		//Do your magic here
-		$config['protocol'] 		= 'smtp';
-
-		$config['smtp_host'] 		= 'mail.smtp2go.com';
-		$config['smtp_user'] 		= 'admin@cryptoroyal.co';
-		$config['smtp_pass'] 		= 'Bismillah123!@#';
-		$config['smtp_port']		= '25';
-		// $config['smtp_crypto']		= 'SSL';
-
-		$config['charset'] 			= 'iso-8859-1';
-		$config['wordwrap'] 		= TRUE;
-		$config['mailtype'] 		= 'html';
-		$config['newline'] 			= '\r\n';
-		$this->load->library('email');
-		$this->email->initialize( $config );
+		$this->load->config('email');
+		$api_key = $this->config->item('mailgun_api_key');
+		$this->mailgun = Mailgun::create($api_key);
+		// $config = $this->config->item($used_mail);
+		// $this->load->library('email');
+		// $this->email->initialize( $config );
 
 	}
 
@@ -34,13 +27,21 @@ class Mailermodel extends CI_Model {
 	 **/
 	public function send( $email_to = 'null', $subject = 'null', $message = null )
 	{ 
-		$this->email->from('admin@cryptoroyal.co', 'Crypto Royal');
-		$this->email->to( $email_to );
 		
-		$this->email->subject( $subject );
-		$this->email->message( $message );
+		// $this->email->from('admin@cryptoroyal.co', 'Crypto Royal');
+		// $this->email->to( $email_to );
 		
-		return $this->email->send();
+		// $this->email->subject( $subject );
+		// $this->email->message( $message );
+		
+		// return $this->email->send();
+
+		return $this->mailgun->messages()->send('mg.cryptoroyal.co', [
+			'from'    => 'admin@cryptoroyal.co',
+			'to'      => $email_to,
+			'subject' => $subject,
+			'html'    => $message
+		]);
 
 	}
 	
