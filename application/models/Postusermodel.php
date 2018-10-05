@@ -269,7 +269,7 @@ class Postusermodel extends CI_Model {
 
 		if (!empty(post('oneCode'))) {
 			$checkResult = $this->googleauthenticator->verifyCode( $userdata->gauth_secret , post('oneCode'), 2);
-			if ( ! $checkResult) {
+			if ( !$checkResult) {
 			    $data['status'] 	= false;
 				$data['message'] 	= 'Code Authenticator invalid'; 
 			}
