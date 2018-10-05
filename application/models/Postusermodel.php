@@ -469,7 +469,7 @@ class Postusermodel extends CI_Model {
 			}
 		}  
 
-		if (! empty( post('oneCode') ) ) {
+		if (post('oneCode') ) {
 			$checkResult = $this->googleauthenticator->verifyCode( $userdata->gauth_secret , post('oneCode'), 2);
 			if ( ! $checkResult) {
 			    $data['status'] 	= false;
@@ -477,7 +477,7 @@ class Postusermodel extends CI_Model {
 			}
 		}
 
-		if (empty(post('amount'))){
+		if (!post('amount')){
 			$data['status'] 	= false;
 			$data['message'] 	= 'Amount to staking is to low';
 		}
