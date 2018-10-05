@@ -701,7 +701,7 @@ class Postusermodel extends CI_Model {
 			$data['type'] 		= 'error';
 		}
 
-		if ( empty( post('oneCodeAuth') ) ) {
+		if ( !post('oneCodeAuth') ) {
 			$data['status'] 	= false;
 			$data['message'] 	= 'One Code Authenticator is Required';
 			$data['heading'] 	= 'Failed';
@@ -748,7 +748,7 @@ class Postusermodel extends CI_Model {
 			$data['type'] 		= 'error';
 		}
 
-		if( empty( post('oneCodeAuth') ) ){
+		if( !post('oneCodeAuth') ){
 			$data['status'] 	= false;
 			$data['message'] 	= 'One Code Authenticator is Required';
 			$data['heading'] 	= 'Failed';
@@ -781,7 +781,7 @@ class Postusermodel extends CI_Model {
 			$data['type'] 		= 'error';
 		}
 
-		if ( empty( $post['oneCodeAuth'] ) ) {
+		if ( ! $post['oneCodeAuth'] ) {
 			$data['status'] 	= false;
 			$data['message'] 	= 'One Code Authenticator is Required';
 			$data['heading'] 	= 'Failed';
