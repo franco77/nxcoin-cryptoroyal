@@ -267,9 +267,9 @@ class Postusermodel extends CI_Model {
 			$data['message'] 	= 'Wallet Amount Insuficient';
 		}
 
-		if (! empty( post('oneCode') ) ) {
+		if (post('oneCode')) {
 			$checkResult = $this->googleauthenticator->verifyCode( $userdata->gauth_secret , post('oneCode'), 2);
-			if ( ! $checkResult) {
+			if ( !$checkResult) {
 			    $data['status'] 	= false;
 				$data['message'] 	= 'Code Authenticator invalid'; 
 			}
@@ -469,7 +469,7 @@ class Postusermodel extends CI_Model {
 			}
 		}  
 
-		if (! empty( post('oneCode') ) ) {
+		if (post('oneCode') ) {
 			$checkResult = $this->googleauthenticator->verifyCode( $userdata->gauth_secret , post('oneCode'), 2);
 			if ( ! $checkResult) {
 			    $data['status'] 	= false;
@@ -477,7 +477,7 @@ class Postusermodel extends CI_Model {
 			}
 		}
 
-		if (empty(post('amount'))){
+		if (!post('amount')){
 			$data['status'] 	= false;
 			$data['message'] 	= 'Amount to staking is to low';
 		}
@@ -701,7 +701,7 @@ class Postusermodel extends CI_Model {
 			$data['type'] 		= 'error';
 		}
 
-		if ( empty( post('oneCodeAuth') ) ) {
+		if ( !post('oneCodeAuth') ) {
 			$data['status'] 	= false;
 			$data['message'] 	= 'One Code Authenticator is Required';
 			$data['heading'] 	= 'Failed';
@@ -748,7 +748,7 @@ class Postusermodel extends CI_Model {
 			$data['type'] 		= 'error';
 		}
 
-		if( empty( post('oneCodeAuth') ) ){
+		if( !post('oneCodeAuth') ){
 			$data['status'] 	= false;
 			$data['message'] 	= 'One Code Authenticator is Required';
 			$data['heading'] 	= 'Failed';
@@ -781,7 +781,7 @@ class Postusermodel extends CI_Model {
 			$data['type'] 		= 'error';
 		}
 
-		if ( empty( $post['oneCodeAuth'] ) ) {
+		if ( ! $post['oneCodeAuth'] ) {
 			$data['status'] 	= false;
 			$data['message'] 	= 'One Code Authenticator is Required';
 			$data['heading'] 	= 'Failed';

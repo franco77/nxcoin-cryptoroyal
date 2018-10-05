@@ -31,12 +31,12 @@
                         
                         <div class="row">
                             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                            <img src="https://cryptoroyal.co/account/assets/images/logo-icon.png" class="img-responsive" alt="Image">
+                            <img src="<?= site_url('assets/images/logo-icon.png') ?>" class="img-responsive" alt="Image">
                                 
                             </div>
                             
                             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                                <img src="https://cryptoroyal.co/account/assets/images/logo-light-text.png" class="img-responsive" alt="Image">
+                                <img src="<?= site_url('assets/images/logo-light-text.png')?>" class="img-responsive" alt="Image">
                                 <h4><?= $message; ?></h4>
                         
                                 <a href="<?=base_url();?>" class="btn btn-default"><h6>Back To Dashboard</h6></a>
