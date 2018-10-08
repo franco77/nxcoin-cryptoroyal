@@ -103,6 +103,29 @@ class Stackingmodel extends CI_Model {
 
 	}
 
+	public function get_all() {
+
+		return $this->db->select('*')->from('tb_stacking')->get()->result();
+
+	}
+
+	public function update($id, $fields) {
+
+		
+		$updated = $this->db->where('stc_id', $id);
+		if(count($fields) < 1) {
+			return true;
+		}
+		
+		foreach( $fields as $k => $v ) {
+			$updated->set($k, $v);
+		}
+		
+		return $updated->update('tb_stacking');
+
+		
+	}
+
 }
 
 /* End of file  */

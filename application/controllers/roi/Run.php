@@ -83,4 +83,45 @@ class Run extends CI_Controller {
 
 		return in_array($weeks, $at_week);
 	}
+
+	public function extend_stc_date($pass=null) {
+		
+		if($pass !== 'cr123runkerak') {
+
+			return response(['success' => 0], 401)->json();
+
+		}
+
+		$stackings = $this->stackingmodel->get_all();
+		if(!$stackings) {
+			return response([
+				'status' =>0
+			])->json();
+		}
+		$success = [];
+		foreach($stackings as $stack) {
+
+			$extends_date = date('Y-m-d H:i:s', strtotime('+196 days', strtotime($stack->stc_date_start) ) );
+
+			$date_before = $stack->stc_date_end;
+
+			$updated = $this->stackingmodel->update($stack->stc_id, [
+				'stc_date_end' => $extends_date
+			]);
+
+			if( $updated ) {
+
+				$success[] = [
+					'stc_id' => $stack->stc_id,
+					'then' => $date_before,
+					'now' => $extends_date
+				];
+
+			}
+			
+		}
+
+		return response($success)->json();
+
+	}
 }
