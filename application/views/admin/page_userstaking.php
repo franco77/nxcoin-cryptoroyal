@@ -3,6 +3,7 @@
 
 ?>  
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+
 <div class="row">
 	<div class="col-md-12">
 		<div class="table-responsive">
@@ -18,6 +19,9 @@
 								<th>Package</th>
 								<th>Date Start</th>
 								<th>Date End</th>
+								<th>NXCC Wallet</th>
+								<th>BES Wallet</th>
+								<th>Jackpot Wallet</th>
 								<th>Act</th>
 							</tr>
 						</thead>
@@ -45,6 +49,10 @@
 								<td><?php echo $var->package_name ?></td>
 								<td><?php echo $var->stc_date_start ?></td>
 								<td><?php echo $var->stc_date_end ?></td>
+								
+								<td><?= number_format($this->walletmodel->cek_balance('A', $var->id),8, '.','.' ) ?></td>
+								<td><?= number_format($this->walletmodel->cek_balance('B', $var->id),8, '.','.' ) ?></td>
+								<td><?= number_format($this->walletmodel->cek_balance('C', $var->id),8, '.','.' ) ?></td>
 								<td>
 									<a href="<?= site_url('admin/view/user-detail/').$var->stc_userid; ?>" class="btn btn-default">View Bonuses</button>
 								</td>
@@ -72,7 +80,11 @@
 <script>
 
 $(document).ready(function() {
-	$("#tb_userstaking").DataTable();
+	$("#tb_userstaking").DataTable({
+		buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+	});
 });
 
 </script>
