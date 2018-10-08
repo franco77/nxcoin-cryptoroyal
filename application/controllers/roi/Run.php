@@ -31,23 +31,28 @@ class Run extends CI_Controller {
 		$bonuses_sent = [];
 		if ($ge->num_rows() > 0){ 
 			foreach ($ge->result() as $get_stc) { 
-				$userdata = userdata(array('id' => $get_stc->stc_userid));
-				//if ($userdata->next_profit ==  $next_profit_date){
-					$bonus = $get_stc->stc_amount * ($get_stc->package_profit/100);
-					$bonuses_sent[] = [
-						'user_id' => $userdata->id,
-						'username' => $userdata->username,
-						'amount' => $bonus,
-					];
-					if ($get_stc->rollover == '0'){
-						$this->bonusmodel->insert_pasif_mode2($get_stc->stc_userid,$bonus);
-					}else{
-						$this->bonusmodel->insert_pasif($get_stc->stc_userid,$bonus);
-					}
-					//update next Profit
-					$this->db->update('tb_users', [ 'next_profit' => $next_profit_date ], [ 'id' => $userdata->id ]);
-				//}
+				
+				if( !$this->last_three_weeks_bonus($get_stc->stc_date_start) ) {
+					$userdata = userdata(array('id' => $get_stc->stc_userid));
+					//if ($userdata->next_profit ==  $next_profit_date){
+						$bonus = $get_stc->stc_amount * ($get_stc->package_profit/100);
+						$bonuses_sent[] = [
+							'user_id' => $userdata->id,
+							'username' => $userdata->username,
+							'amount' => $bonus,
+						];
+						if ($get_stc->rollover == '0'){
+							$this->bonusmodel->insert_pasif_mode2($get_stc->stc_userid,$bonus);
+						}else{
+							$this->bonusmodel->insert_pasif($get_stc->stc_userid,$bonus);
+						}
+						//update next Profit
+						$this->db->update('tb_users', [ 'next_profit' => $next_profit_date ], [ 'id' => $userdata->id ]);
+					//}
+				}
+
 			}
+
 			echo json_encode($bonuses_sent);
 		}
 
@@ -68,5 +73,14 @@ class Run extends CI_Controller {
 	{
 		$this->load->model('mainmodel');
 		$this->mainmodel->Always_Load();
+	}
+
+	private function last_three_weeks_bonus($start_stacking) {
+		
+		$at_week	= [ 25,26,27,28 ];
+		$stc_date	= date('Y-m-d', strtotime($start_stacking));
+		$weeks		= count_weeks($stc_date,date('Y-m-d'));
+
+		return in_array($weeks, $at_week);
 	}
 }

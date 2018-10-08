@@ -15,6 +15,9 @@ class Postusermodel extends CI_Model {
 		'USD' => 11,
 		'NXCC' => NULL
 	];
+	private $stacking_date = [
+		'end' => '+196' // in days. equal 28 weeks
+	];
 	
 
 	public function __construct() {
@@ -521,7 +524,7 @@ class Postusermodel extends CI_Model {
 				$amountB = ($amount*0.1);
 				$amountA = ($amount - $amountB);
 			}
-			$end_date 	= date('Y-m-d', strtotime('+168 days', strtotime( sekarang() )));
+			$end_date 	= date('Y-m-d', strtotime($this->stacking_date['end'].' days', strtotime( sekarang() )));
 			$object = array(
 				'stc_userid'		=> userid(),
 				'stc_amount'		=> $amount,

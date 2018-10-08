@@ -531,3 +531,28 @@ if(!function_exists('csrf_field') ) {
 		return "<input type='hidden' name='csrf_nx' value='$token'>";
 	}
 }
+
+if(!function_exists('count_weeks')) {
+
+	function count_weeks($date1, $date2, $format = null) {
+		$format = ($format) ? $format : 'Y-m-d';
+		$date1 = date('Y-m-d', strtotime($date1));
+		$first = DateTime::createFromFormat($format, $date1);
+		$second = DateTime::createFromFormat($format, $date2);
+		if($date1 > $date2) {
+			$d = count_weeks($date2, $date1);
+			return -$d;
+		};
+		
+		return floor($first->diff($second)->days/7);
+
+	}
+}
+
+if(!function_exists('dd')) {
+
+	function dd($v) {
+		die(var_dump($v));
+
+	}
+}
