@@ -10,7 +10,7 @@ class Bonus extends CI_Controller {
         
     }
 
-    public function run($type,$pass, $mode = 'false') {
+    public function run($type,$pass=null, $mode = 'false') {
         
         if(md5($pass) !== $this->cmd_pass ) {
             exit('You Busted!');
