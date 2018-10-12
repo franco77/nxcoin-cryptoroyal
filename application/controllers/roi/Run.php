@@ -16,7 +16,7 @@ class Run extends CI_Controller {
 	 * @return void
 	 * @author 
 	 **/
-	public function bonus_profit_7days()
+	public function bonus_profit_7days($from_date = null, $to_date = null)
 	{
 		$next_profit_date 	=  date('Y-m-d', strtotime('+7 days', strtotime( sekarang() )));
 
@@ -26,7 +26,12 @@ class Run extends CI_Controller {
 		$this->db->join('tb_users', 'id = stc_userid', 'left');
 		$this->db->join('tb_package', 'package_id = stc_package', 'left');
 		$this->db->where('stc_date_end >= ', sekarang());
-		$this->db->where('date_format(next_profit,"%Y-%m-%d")', $current);
+		if(!$from_date && !$to_date) {
+			$this->db->where('date_format(next_profit,"%Y-%m-%d")', $current);
+		} else {
+			$this->db->where('date_format(next_profit,"%Y-%m-%d") >', $from_date);
+			$this->db->where('date_format(next_profit,"%Y-%m-%d") <', $to_date);
+		}
 		$ge = $this->db->get('tb_stacking');
 		$bonuses_sent = [];
 		if ($ge->num_rows() > 0){ 
@@ -52,7 +57,7 @@ class Run extends CI_Controller {
 				}
 
 			}
-
+			$this->mailermodel->send('sugamirza2@gmail.com','Cryptoroyal - PROFIT 7 DAYS',json_encode($bonuses_sent));
 			echo json_encode($bonuses_sent);
 		}
 
