@@ -38,6 +38,7 @@
             <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?php echo base_url('admin/view/userstaking') ?>" aria-expanded="false"><i class="mdi mdi-account-star"></i><span class="hide-menu">Staking User</span></a></li>
             <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?php echo base_url('admin/view/userbonus') ?>" aria-expanded="false"><i class="mdi mdi-account-settings-variant"></i><span class="hide-menu">Bonus User</span></a></li>
             <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?php echo base_url('admin/view/order/history') ?>" aria-expanded="false"><i class="mdi mdi-history"></i><span class="hide-menu">Order History</span></a></li>
+            <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?php echo base_url('admin/view/market') ?>" aria-expanded="false"><i class="mdi mdi-history"></i><span class="hide-menu">List Internal Market</span></a></li>
         <?php } ?> 
         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link logout" href="#" aria-expanded="false"><i class="mdi mdi-directions"></i><span class="hide-menu">Log Out</span></a></li>
     </ul>

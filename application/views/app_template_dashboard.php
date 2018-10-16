@@ -6,7 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content=""> 
+    <meta name="author" content="">
+    <meta name="csrf_nx" content="<?= $this->security->get_csrf_hash() ?>">
     <link rel="icon" type="image/png" sizes="16x16" href="<?=base_url()?>assets/images/favicon.png">
     <link href="<?=base_url()?>assets/libs/chartist/dist/chartist.min.css" rel="stylesheet">
     <link href="<?=base_url()?>assets/extra-libs/c3/c3.min.css" rel="stylesheet"> 
