@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 <?php
-    $orders = $this->marketmodel->pending_orders(FALSE);
+    $orders = $this->marketmodel->pending_orders(FALSE, NULL, TRUE);
 ?>
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -12,6 +12,7 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>USERNAME</th>
                                 <th>TYPE</th>
                                 <th>PRICE</th>
                                 <th>AMOUNT</th>
@@ -24,6 +25,7 @@
                                 <?php foreach($orders as $order) { ?>
                                 <tr>
                                     <td><?= $order->booking_id ?></td>
+                                    <td><?= trim($order->username) ?></td>
                                     <td><?= ($order->type == 'S') ? 'SELL' : 'BUY' ?></td>
                                     <td><?= $order->price ?></td>
                                     <td><?= $order->amount ?></td>
