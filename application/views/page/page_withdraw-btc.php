@@ -81,8 +81,8 @@ $(document).ready(function() {
         var data = {
             'receiver': $("#receiver").val(),
             'amount': $("#amount").val(),
-            'csrf_nx': $("[name='csrf_nx']").val()
-        }
+            'csrf_nx': getToken()
+        };
         $.ajax({
             url: env.site_url + 'walletbtc/withdraw',
             method: 'POST',
@@ -94,7 +94,7 @@ $(document).ready(function() {
                     text: res.message,
                     type: res.type
                 });
-                refreshToken(res.csrf_data);
+                setToken(res.csrf_data);
             },
             error: function(err) {
                 var res = JSON.parse(err.responseText);
@@ -104,7 +104,7 @@ $(document).ready(function() {
                     text: res.message,
                     type: res.type
                 });
-                refreshToken(res.csrf_data);
+                setToken(res.csrf_data);
             }
         }).always(function() {
             $('body').loading('stop');
@@ -112,8 +112,11 @@ $(document).ready(function() {
 
     });
 
-    function refreshToken(token) {
-        $("[name='csrf_nx']").val(token);
+    function getToken() {
+        return $("[name='csrf_nx']").attr('content');
+    }
+    function setToken(token) {
+        $("[name='csrf_nx']").attr('content',token);
     }
 
 
